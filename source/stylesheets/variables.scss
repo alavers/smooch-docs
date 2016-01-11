@@ -28,7 +28,7 @@ $examples-bg: #393939;
 $code-bg: #292929;
 $code-annotation-bg: #1c1c1c;
 $nav-subitem-bg: #262626;
-$nav-active-bg: #912d8d;
+$nav-active-bg: #fff;
 $lang-select-border: #000;
 $lang-select-bg: #222;
 $lang-select-active-bg: $examples-bg; // feel free to change this to blue or something
@@ -91,7 +91,7 @@ $nav-footer-border-color: #666;
 $nav-embossed-border-top: #000;
 $nav-embossed-border-bottom: #939393;
 $main-embossed-text-shadow: 0px 1px 0px #fff;
-$search-box-border-color: #666;
+$search-box-border-color: rgba(102,102,102,0.1);
 
 
 ////////////////////////////////////////////////////////////////////////////////

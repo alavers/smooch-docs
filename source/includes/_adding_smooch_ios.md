@@ -6,7 +6,7 @@ We've documented both methods for adding Smooch to your app. Read on and follow 
 
 ## CocoaPods Method
 
-First, install Cocoapods if it isn't already available on your system: 
+First, install Cocoapods if it isn't already available on your system:
 
 ```
 sudo gem install cocoapods
@@ -22,7 +22,7 @@ $ echo "pod 'Smooch'" >> Podfile
 $ pod install
 ```
 
-Open the .xcworkspace file and add the necessary code to [initialize Smooch in your app](#import-the-smooch-header-file). 
+Open the .xcworkspace file and add the necessary code to [initialize Smooch in your app](#import-the-smooch-header-file).
 
 <aside class="notice">
 Remember — when you use CocoaPods to manage your app's dependencies, you have to build and run your app using the .xcworkspace file and not the .xcodeproj file.
@@ -92,7 +92,7 @@ Make sure to replace `YOUR_APP_TOKEN` with your app token.
 
 ### Displaying the Smooch User Interface
 
-Once you've initialized Smooch, you're ready to try it out. 
+Once you've initialized Smooch, you're ready to try it out.
 
 Find a suitable place in your app's interface to invoke Smooch and use the code below to display the Smooch user interface. You can bring up Smooch whenever you think that your user will need access to help or a communication channel to contact you.
 
