@@ -48,22 +48,63 @@ under the License.
         <%= image_tag('navbar.png') %>
       </span>
     </a>
-    <div class="tocify-wrapper">
-      <%= image_tag "logo.png" %>
-      <div class="separator separator-top"></div>
-      <div class="platform-nav">
-        <div class="nav-label">Platform</div>
-        <div class="platform-selector btn-group">
-          <button class="btn btn-default" data-platform-name="ios">iOS</button>
-          <button class="btn btn-default" data-platform-name="android">Android</button>
-          <button class="btn btn-default" data-platform-name="web">Web</button>
-        </div>
-        <div class="clear"></div>
-        <% if language_tabs %>
-          <div class="nav-label">Language</div>
-            <div class="btn-group">
-              <button class="btn btn-default language-dropdown">Objective-C</button>
-              <div class="arrow-down"></div>
+    <!-- header of the page -->
+    <header id="header">
+    	<div class="header-holder">
+    		<div class="wrap">
+    			<div class="logo">
+    				<a href="/">
+    					<img class="desktop-image" src="images/logo.svg" width="146" height="29" alt="smooch">
+    					<img class="mobile-image" src="images/logo-mobile.svg" width="38" height="29" alt="smooch">
+    				</a>
+    			</div>
+    			<div class="right-nav">
+    				<a href="//app.smooch.io/login" class="login mobi-hide app-link">Log in</a>
+    				<a href="//app.smooch.io/signup" class="btn-menu btn-signup app-link">Sign up for free</a>
+    			</div>
+    			<nav class="main-nav">
+    				<a href="#" class="nav-opener"><span></span></a>
+    				<ul>
+    					<li><a href="/is">Features</a></li>
+    					<li><a href="/integrations">Integrations</a></li>
+    					<li><a href="/customers">Customers</a></li>
+    					<li><a href="/pricing">Pricing</a></li>
+    					<li><a href="/docs">Docs</a></li>
+    					<li><a href="/help">Help</a></li>
+    					<li><a href="http://blog.smooch.io">Blog</a></li>
+    					<li class="mobi-show"><a href="#">Log in</a></li>
+    				</ul>
+    				<div class="overlay"></div>
+    			</nav>
+    		</div>
+    	</div>
+    </header>
+    <div class="platform-nav">
+        <div class="wrap">
+      <div class="nav-label">Platform</div>
+      <div class="right-sub-nav">
+          <a href="//app.smooch.io/login" class="api-link">iOS API reference</a>
+          <a href="//app.smooch.io/signup" class="api-link">REST API</a>
+      </div>
+      <div class="platform-selector btn-group">
+        <button class="btn btn-default" data-platform-name="ios">iOS</button>
+        <button class="btn btn-default" data-platform-name="android">Android</button>
+        <button class="btn btn-default" data-platform-name="web">Web</button>
+      </div>
+      <div class="clear"></div>
+      </div>
+  </div>
+    <div class="content2">
+        <div class="page-wrapper">
+          <div class="dark-box"></div>
+          <div class="content">
+            <%= yield %>
+            <% current_page.data.includes && current_page.data.includes.each do |include| %>
+              <%= partial("includes/#{include}", :locals => { :api_docs_link => current_page.data.api_docs_link }) %>
+            <% end %>
+          </div>
+          <div class="dark-box">
+            <% if language_tabs %>
               <div class="lang-selector">
                 <% language_tabs.each do |lang| %>
                   <% if lang.is_a? Hash %>
@@ -73,48 +114,26 @@ under the License.
                   <% end %>
                 <% end %>
               </div>
-            <div class="clear"></div>
-          </div>
-        <% end %>
-      </div>
-      <div class="separator"></div>
-      <% if current_page.data.search %>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-      <div id="toc">
-      </div>
-      <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <%= yield %>
-        <% current_page.data.includes && current_page.data.includes.each do |include| %>
-          <%= partial("includes/#{include}", :locals => { :api_docs_link => current_page.data.api_docs_link }) %>
-        <% end %>
-      </div>
-      <div class="dark-box">
-        <% if language_tabs %>
-          <div class="lang-selector">
-            <% language_tabs.each do |lang| %>
-              <% if lang.is_a? Hash %>
-                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-              <% else %>
-                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-              <% end %>
             <% end %>
+        </div>
+        </div>
+        <div class="tocify-wrapper">
+          <% if current_page.data.search %>
+            <div class="search">
+              <input type="text" class="search" id="input-search" placeholder="Search">
+            </div>
+            <ul class="search-results"></ul>
+          <% end %>
+          <div id="toc">
           </div>
-        <% end %>
-      </div>
+          <% if current_page.data.toc_footers %>
+            <ul class="toc-footer">
+              <% current_page.data.toc_footers.each do |footer| %>
+                <li><%= footer %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
     </div>
   </body>
 </html>
