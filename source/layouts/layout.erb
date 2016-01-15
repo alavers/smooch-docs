@@ -79,22 +79,22 @@ under the License.
     		</div>
     	</div>
     </header>
-    <div class="platform-nav">
-        <div class="wrap">
-      <div class="nav-label">Platform</div>
-      <div class="right-sub-nav">
-          <a href="//app.smooch.io/login" class="api-link">iOS API reference</a>
-          <a href="//app.smooch.io/signup" class="api-link">REST API</a>
+    <!--div class="content2"-->
+        <div class="platform-nav">
+            <div class="wrap">
+          <div class="nav-label">Platform</div>
+          <div class="right-sub-nav">
+              <a href="//app.smooch.io/login" class="api-link">iOS API Reference</a>
+              <a href="//app.smooch.io/signup" class="api-link">REST API</a>
+          </div>
+          <div class="platform-selector btn-group">
+            <button class="btn btn-default" data-platform-name="ios">iOS</button>
+            <button class="btn btn-default" data-platform-name="android">Android</button>
+            <button class="btn btn-default" data-platform-name="web">Web</button>
+          </div>
+          <div class="clear"></div>
+          </div>
       </div>
-      <div class="platform-selector btn-group">
-        <button class="btn btn-default" data-platform-name="ios">iOS</button>
-        <button class="btn btn-default" data-platform-name="android">Android</button>
-        <button class="btn btn-default" data-platform-name="web">Web</button>
-      </div>
-      <div class="clear"></div>
-      </div>
-  </div>
-    <div class="content2">
         <div class="page-wrapper">
           <div class="dark-box"></div>
           <div class="content">
@@ -127,13 +127,29 @@ under the License.
           <div id="toc">
           </div>
           <% if current_page.data.toc_footers %>
-            <ul class="toc-footer">
+            <!--ul class="toc-footer">
               <% current_page.data.toc_footers.each do |footer| %>
                 <li><%= footer %></li>
               <% end %>
-            </ul>
+          </ul-->
           <% end %>
         </div>
-    </div>
+    <!--/div-->
+    <script>
+        $(window).scroll(function() {
+        if ($(this).scrollTop() > 1){
+            $('header').addClass("sticky");
+            $('.content2').addClass("sticky");
+            $('.platform-nav').addClass("sticky");
+            $('.tocify-wrapper').addClass("sticky");
+        }
+        else{
+            $('header').removeClass("sticky");
+            $('.content2').removeClass("sticky");
+            $('.platform-nav').removeClass("sticky");
+            $('.tocify-wrapper').removeClass("sticky");
+        }
+        });
+    </script>
   </body>
 </html>
