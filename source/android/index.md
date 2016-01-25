@@ -12,17 +12,18 @@ toc_footers:
   - <a href='/android'>Android Guide</a> | <a href='/api/android'>Class Reference</a>
   - <a href='/javascript'>Web Guide</a> | <a href='https://github.com/smooch/smooch-js' target="_blank">Class Reference</a>
   - <a href='/rest'>REST API Reference</a>
-  
+
 includes:
+  - android_banner
   - welcome
   - references
   - adding_smooch_android
   - configuring_push_android
-  
+
   - users/users
   - users/user_data_intro
   - users/user_data_android
-  - users/user_data_aside 
+  - users/user_data_aside
   - users/sensitive_user_data
   - users/users_on_multiple_devices
   - users/authenticating_users
@@ -44,7 +45,7 @@ includes:
   - whispers/whisper_actions
   - whispers/whisper_manage
 
-  
+
 
   - localization_android
 

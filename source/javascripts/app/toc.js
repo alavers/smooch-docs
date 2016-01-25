@@ -44,4 +44,3 @@
   $(animate);
 
 })(window);
-

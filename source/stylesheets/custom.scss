@@ -1,4 +1,5 @@
 @import 'variables';
+@import '_include-media';
 
 @font-face {
     font-family: 'proxima-nova';
@@ -26,17 +27,228 @@ body {
   color: #464646;
   background-color: #fff;
 }
-/*****.content2{
-    position:absolute;;
-    display: block;
-    height:100%;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// HEADER
+////////////////////////////////////////////////////////////////////////////////
+// These are the styles for phones and tablets
+// There are also a couple styles disperesed
+
+$breakpoints: (
+	'xs-phone': 320px,
+	'phone': 480px,
+	'tablet': 768px,
+	'desktop': 1025px,
+	'widescreen': 1200px
+);
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina1x': '(-webkit-min-device-pixel-ratio: 1)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+.wrap {
+	//@extend %clearfix;
+
+	max-width: 1198px;
+	padding: 0 15px;
+	margin: 0 auto;
 }
-.content2.sticky{
-    top:0px;
-}*****/
+.desktop-image {
+	display: block;
+	@include media('<tablet') {
+		display: none;
+	}
+}
+.mobile-image {
+	display: none;
+	@include media('<tablet') {
+		display: block;
+	}
+}
+.mobi-hide {
+	@include media('<tablet') {
+		display: none;
+	}
+}
+.custom-head {
+	#header {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		@include media('<desktop'){
+			position: relative;
+		}
+	}
+}
+#header{
+	padding: 25px 0 13px;
+	height: 75px;
+	box-sizing: content-box;
+    position: absolute;
+    top: 0;
+    width: 100%;
+	//position: relative;
+	.header-holder {
+		.wrap {
+			max-width: 1177px;
+		}
+	}
+	@include media('<desktop') {
+		height: 65px;
+		padding: 0;
+	}
+    -webkit-transition: all 0.6s ease-in;
+            transition: all 0.6s ease-in;
+}
+#header.sticky {
+    top: -113px;
+    @include media('<desktop') {
+		top: -65px;
+	}
+-webkit-transition: top 0.6s ease-in;
+        transition: top 0.6s ease-in;
+/*width: 100%;
+position: fixed;*/
+
+}
+.header-holder {
+	padding: 20px 0;
+	position: absolute;
+	top: 25px;
+	left: 0;
+	width: 100%;
+	z-index: 30;
+    background-color: #fff;
+	.nav-active &{
+		position: fixed;
+		top: 0;
+	}
+	.touch-device &{
+		position: fixed;
+		top: 0;
+		background:rgba(#fff,0.95);
+		padding-top: 45px;
+	}
+	@include media('<desktop') {
+		top: 0;
+		padding: 11px 0 12px;
+		.touch-device &{
+			padding-top: 11px;
+			border-bottom: 1px solid #e5e5e5;
+		}
+	}
+	/*.bg{
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background:rgba(#fff,0.98);
+		border-bottom: 1px solid #e5e5e5;
+		.nav-active &{
+			opacity: 1 !important;
+		}
+	}
+	&.fixed-header {
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: 100%;
+		left: 0;
+		.touch-device &{
+			padding-top: 20px;
+			background:rgba(#fff,0.98);
+			border-bottom: 1px solid #e5e5e5;
+			@include media('<desktop'){
+				padding-top: 11px;
+			}
+		}
+	}*/
+	.wrap {
+		//@extend %clearfix;
+		max-width: 1168px;
+	}
+	.right-nav {
+		float: right;
+		margin: -3px 0 0;
+		@include media('<desktop'){
+			float: none;
+			overflow: hidden;
+			text-align: center;
+			margin: 0;
+			padding: 0 148px 0 4px;
+		}
+		@include media('<tablet') {
+			padding: 0 30px 0 4px;
+		}
+	}
+    .right-nav a{
+        text-decoration: none;
+    }
+	.login {
+		color: #333;
+		display: inline-block;
+		vertical-align: middle;
+		font-size: 15px;
+		line-height: 34px;
+		margin: 0 18px 0 0;
+		@include media('<desktop'){
+			display: none;
+		}
+		&:hover {
+			color: $violet;
+			text-decoration: none;
+		}
+	}
+	.btn-signup {
+		font-weight: 600;
+		@include media('<desktop'){
+			padding: 8px 16px 9px;
+		}
+	}
+}
+.logo {
+	float: left;
+	padding: 2px 0 0;
+	@include media('<desktop'){
+		padding: 6px 0 0 2px;
+	}
+}
+.btn-menu {
+	background: $violet;
+	color: #fff;
+	font-size: 15px;
+	line-height: 24px;
+	display: inline-block;
+	padding: 7px 13px;
+	border-radius: 4px;
+	@include media('<desktop'){
+		font-size: 16px;
+	}
+	&:hover,
+	&:focus {
+		text-decoration: none;
+		background: darken($violet,15%);
+	}
+}
+
+///////// MENU GAUCHE
+
 .page-wrapper {
   background-color: transparent;
   position: relative;
+      margin-left: 300px;
+      margin-top: 185px;
 }
 
 .tocify-wrapper {
@@ -46,11 +258,13 @@ body {
     padding: 24px 0;
     width: 300px;
     top: 186px;
-    -webkit-transition: all 0.4s ease-in;
-            transition: all 0.4s ease-in;
+    -webkit-transition: all 0.6s ease-in;
+            transition: all 0.6s ease-in;
 }
 .tocify-wrapper.sticky {
 top: 75px;
+-webkit-transition: all 0.4s ease-in;
+        transition: all 0.4s ease-in;
 }
 
 .tocify-wrapper>img {
@@ -158,10 +372,8 @@ top: 75px;
   padding-left: 0px;
 }
 
-.page-wrapper {
-    margin-left: 300px;
-    margin-top: 71px;
-}
+// -------- LANG-SELECTOR --------
+// -------------------------------------------------
 
 .lang-selector {
   background-color: #C158AD;
@@ -196,9 +408,12 @@ top: 75px;
   outline: 0;
 }
 
+// -------- CONTENT --------
+// -------------------------------------------------
+
 .content {
   max-width: 1200px;
-  padding-top: 30px;
+  padding-top: 15px;
 }
 
 .content>h1,
@@ -259,18 +474,23 @@ top: 75px;
   padding-left: 62px;
 }
 
+.content a{
+    color: #ed217c;
+}
+
 .content aside {
-  background: #efd7ee;
+  background: #fff;
   margin-left: 42px;
   padding: 0.8em 20px;
   text-shadow: none;
   border: 1px solid #912d8d;
   border-radius: 3px;
-  border: none;
+  //border: none;
 }
 
 .content aside a {
-  color: #912d8d;
+  color: #ed217c;
+  text-decoration: none;
 }
 
 .content aside.notice:before {
@@ -279,14 +499,14 @@ top: 75px;
 }
 
 .content aside.warning {
-  background-color: #fcdfe3;
+  background-color: #fff;
   text-shadow: none;
-  border-color: #e53e51;
-  border: none;
+  /*border-color: #e53e51;
+  border: none;*/
 }
 
 .content aside.warning:before {
-  color: #e53e51;
+  color: #912d8d;
   font-size: 16px;
 }
 
@@ -414,6 +634,14 @@ beta:after {
 
 #nav-button {
   opacity: 0.82;
+  top:136px;
+  -webkit-transition: all 0.6s ease-in;
+          transition: all 0.6s ease-in;
+}
+#nav-button.sticky {
+top:71px;
+-webkit-transition: all 0.4s ease-in;
+        transition: all 0.4s ease-in;
 }
 
 #nav-button span {
@@ -439,13 +667,44 @@ beta:after {
     }
 
   }
-
   .page-wrapper {
     margin-left: 0;
   }
 
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// SUB-MENU
+////////////////////////////////////////////////////////////////////////////////
+
+.platform-nav {
+    /* margin-bottom: 36px; */
+    height: 71px;
+    z-index: 40;
+    width: 100%;
+     top: 113px;
+    position: fixed;
+    //position: relative;
+    background-color: #f9f9f9;
+    -webkit-box-shadow: 0px 3px 1px 0px #f2f2f2;
+    -moz-box-shadow: 0px 3px 1px 0px #f2f2f2;
+    box-shadow: 0px 3px 1px 0px #f2f2f2;
+    -webkit-transition: all 0.6s ease-in;
+            transition: all 0.6s ease-in;
+    @include media('<desktop'){
+        top: 65px;
+    }
+    -webkit-backface-visibility:hidden; /*Most Important*/
+}
+.platform-nav.sticky {
+top: 0px;
+-webkit-transition: all 0.4s ease-in;
+        transition: all 0.4s ease-in;
+/*width: 100%;
+position: fixed;*/
+data-position:fixed;
+-webkit-backface-visibility:hidden; /*Most Important*/
+}
 // straight from bootstrap button group
 
 .btn-group {
@@ -454,6 +713,12 @@ beta:after {
     width: 50%;
     margin: auto;
     /* position: absolute; */
+    @include media('<desktop'){
+        padding-left: 25px;
+        left: 0;
+        position: absolute;
+        text-align: left;
+    }
 }
 
 .btn-group>.btn:first-child:not(.language-dropdown) {
@@ -480,9 +745,12 @@ beta:after {
 .btn-default {
     color: #787f8c;
     padding: 9px 0px;
-margin: 0 11px;
-   border: 0px;
-   background-color: transparent;
+    margin: 0 11px;
+    border: 0px;
+    background-color: transparent;
+    @include media('≤phone'){
+        margin: 0 5px;
+    }
 }
 
 .btn-selected {
@@ -516,7 +784,6 @@ margin: 0 11px;
 .btn:focus {
   outline: 0;
 }
-
 .nav-label {
   color: #F183CE;
   margin-left: 36px;
@@ -550,8 +817,7 @@ margin: 0 11px;
 }
 .right-sub-nav{
     float: right;
-    /* text-decoration: none; */
-    margin: 26px 11px;
+    margin: 25px 11px;
 }
 .right-sub-nav .api-link{
     text-decoration: none;
@@ -559,27 +825,11 @@ margin: 0 11px;
     font-size: 14px;
     line-height: 1.42857143;
     margin-left: 20px;
+    @include media('≤phone'){
+        margin-left: 9px;
+    }
 }
-.platform-nav {
-    /* margin-bottom: 36px; */
-    height: 71px;
-    z-index: 40;
-    width: 100%;
-     top: 113px;
-    position: fixed;
-    //position: relative;
-    background-color: #f9f9f9;
-    -webkit-box-shadow: 0px 3px 1px 0px #f2f2f2;
-    -moz-box-shadow: 0px 3px 1px 0px #f2f2f2;
-    box-shadow: 0px 3px 1px 0px #f2f2f2;
-    -webkit-transition: all 0.4s ease-in;
-            transition: all 0.4s ease-in;
-}
-.platform-nav.sticky {
-top: 0px;
-/*width: 100%;
-position: fixed;*/
-}
+//FIN//
 
 .separator-top {
   margin-top: 10px;
@@ -612,3 +862,7 @@ position: fixed;*/
 .third-width-img img {
   max-width: 33%;
 }
+
+
+
+@import 'navigation';

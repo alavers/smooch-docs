@@ -14,6 +14,7 @@ toc_footers:
   - <a href='/rest'>REST API Reference</a>
 
 includes:
+  - ios_banner
   - welcome
   - references
   - adding_smooch_ios

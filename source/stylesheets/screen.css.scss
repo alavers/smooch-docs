@@ -46,8 +46,9 @@ p, ul li:not(.tocify-item) {
 
 p img {
   display:block;
-  margin-left: auto;
-  margin-right:auto;
+  /*margin-left: auto;
+  margin-right:auto;*/
+  margin-left: 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -349,7 +350,7 @@ p img {
 .content {
   // to place content above the dark box
   position: relative;
-  z-index: 30;
+  z-index: 15;
 
   &:after {
     content: '';
@@ -636,4 +637,3 @@ p img {
 }
 
 @import 'custom';
-@import 'navigation';

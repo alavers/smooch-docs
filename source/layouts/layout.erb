@@ -41,7 +41,7 @@ under the License.
     <% end %>
   </head>
 
-  <body class="<%= page_classes %>">
+  <body class="home" class="<%= page_classes %>">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -65,12 +65,12 @@ under the License.
     			<nav class="main-nav">
     				<a href="#" class="nav-opener"><span></span></a>
     				<ul>
-    					<li><a href="/is">Features</a></li>
-    					<li><a href="/integrations">Integrations</a></li>
-    					<li><a href="/customers">Customers</a></li>
-    					<li><a href="/pricing">Pricing</a></li>
-    					<li><a href="/docs">Docs</a></li>
-    					<li><a href="/help">Help</a></li>
+    					<li><a href="https://smooch.io/is">Features</a></li>
+    					<li><a href="https://smooch.io/integrations">Integrations</a></li>
+    					<li><a href="https://smooch.io/customers">Customers</a></li>
+    					<li><a href="https://smooch.io/pricing">Pricing</a></li>
+    					<li><a href="https://smooch.io/docs">Docs</a></li>
+    					<li><a href="https://smooch.io/help">Help</a></li>
     					<li><a href="http://blog.smooch.io">Blog</a></li>
     					<li class="mobi-show"><a href="#">Log in</a></li>
     				</ul>
@@ -79,13 +79,12 @@ under the License.
     		</div>
     	</div>
     </header>
-    <!--div class="content2"-->
         <div class="platform-nav">
             <div class="wrap">
           <div class="nav-label">Platform</div>
           <div class="right-sub-nav">
-              <a href="//app.smooch.io/login" class="api-link">iOS API Reference</a>
-              <a href="//app.smooch.io/signup" class="api-link">REST API</a>
+              <a href="http://docs.smooch.io/api/ios/" class="api-link">iOS API Reference</a>
+              <a href="http://docs.smooch.io/rest/#introduction" class="api-link">REST API</a>
           </div>
           <div class="platform-selector btn-group">
             <button class="btn btn-default" data-platform-name="ios">iOS</button>
@@ -126,15 +125,8 @@ under the License.
           <% end %>
           <div id="toc">
           </div>
-          <% if current_page.data.toc_footers %>
-            <!--ul class="toc-footer">
-              <% current_page.data.toc_footers.each do |footer| %>
-                <li><%= footer %></li>
-              <% end %>
-          </ul-->
-          <% end %>
+
         </div>
-    <!--/div-->
     <script>
         $(window).scroll(function() {
         if ($(this).scrollTop() > 1){
@@ -142,12 +134,14 @@ under the License.
             $('.content2').addClass("sticky");
             $('.platform-nav').addClass("sticky");
             $('.tocify-wrapper').addClass("sticky");
+            $('#nav-button').addClass("sticky");
         }
         else{
             $('header').removeClass("sticky");
             $('.content2').removeClass("sticky");
             $('.platform-nav').removeClass("sticky");
             $('.tocify-wrapper').removeClass("sticky");
+            $('#nav-button').removeClass("sticky");
         }
         });
     </script>
