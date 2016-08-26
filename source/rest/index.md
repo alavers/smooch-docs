@@ -1147,7 +1147,7 @@ smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '1471995721'}).
 
 <api>`GET /v1/appusers/{smoochId|userId}/messages`</api>
 
-Get the specified app user's conversation history with a limit of 100 messages, if it exists. If the conversation has not yet been created for the specified app user, 404 will be returned. 
+Get the specified app user's conversation history with a limit of 100 messages, if it exists. If a conversation has not yet been created for the specified app user, 404 will be returned. 
 
 ### Pagination
 
@@ -1155,10 +1155,10 @@ The API endpoint for retrieving messages of a conversation has a limit of a 100 
 
 | Parameter                | Description              |
 |--------------------------|--------------------------|
-| `before`                 | Timestamp of message. The API will return 100 messages before the specified timestamp.           |
-| ` after`                 | Timestamp of message. The API will return 100 messages after the specified timestamp.            |
+| `before`                 | Timestamp of message. The API will return 100 messages before the specified timestamp (excluding the message with the provided timestamp).           |
+| `after`                  | Timestamp of message. The API will return 100 messages after the specified timestamp (excluding the message with the provided timestamp).            |
 
-The timestamp format should be in [Unix time](https://en.wikipedia.org/wiki/Unix_time). Note that in the old endpoint `/v1/appusers/{smoochId|userId}/messages`, pagination was not supported.
+The timestamp format should be in [Unix time](https://en.wikipedia.org/wiki/Unix_time).
 
 ## Reset Unread Count
 > Request:
@@ -1290,7 +1290,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1323,7 +1323,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1360,7 +1360,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1396,7 +1396,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Which do you prefer?',
     role: 'appMaker',
     actions: [
@@ -1468,7 +1468,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
 }'
 ```
 ```js
-smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     role: 'appMaker',
     items: [{
         title: 'Tacos',
