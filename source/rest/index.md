@@ -1111,11 +1111,11 @@ When the first message is sent to an app user or received from an app user, a co
 > Request:
 
 ```shell
-curl https://api.smooch.io/v1/appUsers/c7f6e6d6c3a637261bd9656f/messages?before=57bb31808f75d3c3948b8500 \
+curl https://api.smooch.io/v1/appUsers/c7f6e6d6c3a637261bd9656f/messages?before=1471995721 \
      -H 'app-token: cr2g6jgxrahuh68n1o3e2fcnt'
 ```
 ```js
-smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '57bb31808f75d3c3948b8500'}).then((response) => {
+smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '1471995721'}).then((response) => {
     // async code
 });
 ```
