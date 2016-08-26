@@ -68,6 +68,8 @@ Smooch APIs are subject to rate limiting.  If you exceed the limits, Smooch will
 
 The "devices" array returned in the AppUser payload has been changed to "clients". In order to maintain compatibility, we will keep returning the "devices" array in v1, but in the next version it will be removed.
 
+The endpoints for [retrieving a conversation](#get-conversation), [posting a message](#post-message), and [uploading an image](#upload-image) have been changed. To maintain compatibility, both the new and old endpoint will be usable. However, the old endpoint will be removed in the next version.
+
 # Authentication
 
 Smooch APIs offer two methods of authentication:
@@ -1104,16 +1106,16 @@ Removes the specified channel from the appUser's clients.
 
 When the first message is sent to an app user or received from an app user, a conversation is automatically created for them. The conversation and messages for a given app user can be retrieved and created by way of the `/v1/appusers/` API.
 
-## Get Conversation
+## Get Messages
 
 > Request:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation \
+curl https://api.smooch.io/v1/appUsers/c7f6e6d6c3a637261bd9656f/messages?before=57bb31808f75d3c3948b8500 \
      -H 'app-token: cr2g6jgxrahuh68n1o3e2fcnt'
 ```
 ```js
-smooch.conversations.get('c7f6e6d6c3a637261bd9656f').then((response) => {
+smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '57bb31808f75d3c3948b8500'}).then((response) => {
     // async code
 });
 ```
@@ -1129,23 +1131,34 @@ smooch.conversations.get('c7f6e6d6c3a637261bd9656f').then((response) => {
     "_id": "df0ebe56cbeab98589b8bfa7",
     "appMakers": [],
     "appUsers": ["c7f6e6d6c3a637261bd9656f"],
-    "unreadCount": 0,
-    "messages": [{
-      "_id": "55c8c1498590aa1900b9b9b1",
-      "authorId": "c7f6e6d6c3a637261bd9656f",
-      "role": "appUser",
-      "name": "Steve",
-      "text": "Just put some vinegar on it",
-      "avatarUrl": "https://www.gravatar.com/image.jpg",
-      "received": 1439220041.586
-    }]
-  }
+    "unreadCount": 0
+  },
+  "messages": [{
+    "_id": "55c8c1498590aa1900b9b9b1",
+    "authorId": "c7f6e6d6c3a637261bd9656f",
+    "role": "appUser",
+    "name": "Steve",
+    "text": "Just put some vinegar on it",
+    "avatarUrl": "https://www.gravatar.com/image.jpg",
+    "received": 1439220041.586
+  }]
 }
 ```
 
-<api>`GET /v1/appusers/{smoochId|userId}/conversation`</api>
+<api>`GET /v1/appusers/{smoochId|userId}/messages`</api>
 
-Get the specified app user's conversation history, if it exists. If the conversation has not yet been created for the specified app user 404 will be returned.
+Get the specified app user's conversation history with a limit of 100 messages, if it exists. If the conversation has not yet been created for the specified app user, 404 will be returned. 
+
+### Pagination
+
+The API endpoint for retrieving messages of a conversation has a limit of a 100 messages. The `before` and `after` parameters will have to be specified to indicate which range of messages to return. These paramaters are mutually exclusive. If neither is specified, then the most recent 100 messages will be returned.
+
+| Parameter                | Description              |
+|--------------------------|--------------------------|
+| `before`                 | Timestamp of message. The API will return 100 messages before the specified timestamp.           |
+| ` after`                 | Timestamp of message. The API will return 100 messages after the specified timestamp.            |
+
+The timestamp format should be in [Unix time](https://en.wikipedia.org/wiki/Unix_time). Note that in the old endpoint `/v1/appusers/{smoochId|userId}/messages`, pagination was not supported.
 
 ## Reset Unread Count
 > Request:
@@ -1176,14 +1189,14 @@ Reset the unread count of the conversation to 0. If the conversation has not yet
 > Post as app user:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Just put some vinegar on it", "role": "appUser"}' \
      -H 'content-type: application/json' \
      -H 'app-token: cr2g6jgxrahuh68n1o3e2fcnt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appUser'
 }).then(() => {
@@ -1194,14 +1207,14 @@ smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
 > Post as app maker:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Just put some vinegar on it", "role": "appMaker"}' \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker'
 }).then(() => {
@@ -1229,25 +1242,16 @@ smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
     "_id": "df0ebe56cbeab98589b8bfa7",
     "appMakers": [],
     "appUsers": ["c7f6e6d6c3a637261bd9656f"],
-    "unreadCount": 0,
-    "messages": [{
-      "_id": "55c8c1498590aa1900b9b9b1",
-      "authorId": "c7f6e6d6c3a637261bd9656f",
-      "role": "appMaker",
-      "name": "Steve",
-      "text": "Just put some vinegar on it",
-      "avatarUrl": "https://www.gravatar.com/image.jpg",
-      "received": 1439220041.586
-    }]
+    "unreadCount": 0
   }
 }
 ```
 
-<api>`POST /v1/appusers/{smoochId|userId}/conversation/messages`</api>
+<api>`POST /v1/appusers/{smoochId|userId}/messages`</api>
 
 Post a message to the app user. If the app user does not yet have a conversation, one will be created automatically. Messages must have a `role` of either `appuser` or `appMaker`. Furthermore, a message must have a `text`, `actions`, `items`, or `mediaUrl` specified. Some parameters are mutually exclusive, indicated in the table blow.
 
-Images can be posted by reference using this API by specifying the `mediaUrl` parameter. Alternatively, you may also upload images to the conversation directly using the [`/images`](#post-image) endpoint.
+Images can be posted by reference using this API by specifying the `mediaUrl` parameter. Alternatively, you may also upload images to the conversation directly using the [`/images`](#upload-image) endpoint.
 
 <aside class="notice">
 For messages originating from an app maker, a `jwt` credential with `app` level scope must be used.
@@ -1279,14 +1283,14 @@ There are 4 types of supported actions : **link**, **buy**, **postback**, and **
 > Send link action:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Just put some vinegar on it", "role": "appMaker", "actions": [{"type": "link", "text": "Put vinegar", "uri": "http://example.com" }]}' \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1312,14 +1316,14 @@ smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
 > Send buy action:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Just put some vinegar on it", "role": "appMaker", "actions": [{"type": "buy", "text": "Buy vinegar", "amount": 1000 }]}' \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1349,14 +1353,14 @@ The <a href="/javascript/#stripe">Stripe integration</a> must be configured and 
 > Send postback action:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Just put some vinegar on it", "role": "appMaker", "actions": [{"type": "postback", "text": "Send vinegar", "payload": "buy_vinegar" }]}' \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Just put some vinegar on it',
     role: 'appMaker',
     actions: [
@@ -1385,14 +1389,14 @@ See how to handle postback with <a href="#webhook-triggers">webhook triggers</a>
 > Send reply action:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -d '{"text":"Which do you prefer?", "role": "appMaker", "actions": [{"type": "reply", "text": "Burger King", "payload": "BURGER_KING" }, {"type": "reply", "text": "Pizza Hut", "payload": "PIZZA_HUT"}]}' \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
     text: 'Which do you prefer?',
     role: 'appMaker',
     actions: [
@@ -1427,7 +1431,7 @@ smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
 > Request:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/messages \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages \
      -X POST \
      -H 'content-type: application/json' \
      -H 'authorization: Bearer your-jwt' \
@@ -1464,7 +1468,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/mes
 }'
 ```
 ```js
-smooch.conversations.sendMessage('c7f6e6d6c3a637261bd9656f', {
+smooch.sendMessage('c7f6e6d6c3a637261bd9656f', {
     role: 'appMaker',
     items: [{
         title: 'Tacos',
@@ -1601,7 +1605,7 @@ Text fallback.
 > Request:
 
 ```shell
-curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/images \
+curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/images \
      -X POST \
      -H 'app-token: cr2g6jgxrahuh68n1o3e2fcnt' \
      -H 'content-type: multipart/form-data' \
@@ -1612,7 +1616,7 @@ curl https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/conversation/ima
 ```js
 // Frontend version
 var file = fileInput.files[0];
-smooch.conversations.uploadImage('c7f6e6d6c3a637261bd9656f', file,
+smooch.appUsers.uploadImage('c7f6e6d6c3a637261bd9656f', file,
 {
     text: 'Just put some vinegar on it',
     role: 'appUser'
@@ -1645,23 +1649,12 @@ smooch.conversations.uploadImage('c7f6e6d6c3a637261bd9656f', file,
   "conversation": {
     "_id": "df0ebe56cbeab98589b8bfa7",
     "appMakers": [],
-    "appUsers": ["c7f6e6d6c3a637261bd9656f"],
-    "messages": [{
-      "_id": "55c8c1498590aa1900b9b9b1",
-      "authorId": "c7f6e6d6c3a637261bd9656f",
-      "role": "appUser",
-      "name": "Steve",
-      "text": "https://media.smooch.io/image.jpg",
-      "mediaUrl": "https://media.smooch.io/image.jpg",
-      "mediaType": "image/jpeg",
-      "avatarUrl": "https://www.gravatar.com/image.jpg",
-      "received": 1446599350.851
-    }]
+    "appUsers": ["c7f6e6d6c3a637261bd9656f"]
   }
 }
 ```
 
-<api>`POST /v1/appusers/{smoochId|userId}/conversation/images`</api>
+<api>`POST /v1/appusers/{smoochId|userId}/images`</api>
 
 Upload an image and post it to the conversation. Images are uploaded using the `multipart/form-data` content type. Similar to the `/messages` endpoint, a `role` parameter must be specified. The `/images` endpoint accepts the same parameters as `/messages` but they are sent as form parameters as opposed to being encoded in JSON bodies. The uploaded image will render as part of the message thread in all supported app maker channels (email, Slack, HipChat, Zendesk, Helpscout).
 
