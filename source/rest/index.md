@@ -1129,8 +1129,6 @@ smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '1471995721'}).
 {
   "conversation": {
     "_id": "df0ebe56cbeab98589b8bfa7",
-    "appMakers": [],
-    "appUsers": ["c7f6e6d6c3a637261bd9656f"],
     "unreadCount": 0
   },
   "messages": [{
@@ -1141,7 +1139,8 @@ smooch.appUsers.getMessages('c7f6e6d6c3a637261bd9656f', {before: '1471995721'}).
     "text": "Just put some vinegar on it",
     "avatarUrl": "https://www.gravatar.com/image.jpg",
     "received": 1439220041.586
-  }]
+  }],
+  "next": "https://api.smooch.io/v1/appusers/c7f6e6d6c3a637261bd9656f/messages?after=1471995721"
 }
 ```
 
@@ -1240,8 +1239,6 @@ smooch.appUsers.sendMessage('c7f6e6d6c3a637261bd9656f', {
   },
   "conversation": {
     "_id": "df0ebe56cbeab98589b8bfa7",
-    "appMakers": [],
-    "appUsers": ["c7f6e6d6c3a637261bd9656f"],
     "unreadCount": 0
   }
 }
@@ -1648,8 +1645,7 @@ smooch.appUsers.uploadImage('c7f6e6d6c3a637261bd9656f', file,
   },
   "conversation": {
     "_id": "df0ebe56cbeab98589b8bfa7",
-    "appMakers": [],
-    "appUsers": ["c7f6e6d6c3a637261bd9656f"]
+    "unreadCount": 0
   }
 }
 ```
