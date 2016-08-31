@@ -1,0 +1,1314 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Smooch Documentation</title>
+
+    <link href="../images/favicon.ico" rel="icon" type="image/ico" />
+    <link href="../stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="../stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="../javascripts/all.js" type="text/javascript"></script>
+
+  </head>
+
+  <body class="android android_index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="../images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="../images/logo.png" />
+      <div class="separator separator-top"></div>
+      <div class="platform-nav">
+        <div class="nav-label">Platform</div>
+        <div class="platform-selector btn-group">
+          <button class="btn btn-default" data-platform-name="ios">iOS</button>
+          <button class="btn btn-default" data-platform-name="android">Android</button>
+          <button class="btn btn-default" data-platform-name="web">Web</button>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="separator"></div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='http://smooch.io/'>Sign up for Smooch, it's free</a></li>
+            <li><br/></li>
+            <li><a href='/ios'>iOS Guide</a> | <a href='/api/ios'>Class Reference</a></li>
+            <li><a href='/android'>Android Guide</a> | <a href='/api/android'>Class Reference</a></li>
+            <li><a href='/javascript'>Web Guide</a> | <a href='https://github.com/smooch/smooch-js' target="_blank">Class Reference</a></li>
+            <li><a href='/rest'>REST API Reference</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        
+          <h1 id='welcome'>Welcome</h1>
+<p>Smooch lets you have rich conversations with your users, right in your app or on your website. If you want to learn more about Smooch, then visit our website at <a href="http://smooch.io">http://smooch.io</a> or <a href="https://app.smooch.io">sign up here</a>. This page provides in-depth documentation on Smooch&rsquo;s features and is meant to be a guide for developers integrating the SDK and app makers seeking to engage with their users.</p>
+
+<p>Source code examples are provided for all of our SDKs, including both Objective-C and Swift for iOS. You can view code examples inline, and you can switch the programming language of the examples with the tabs in the top left.</p>
+
+<p>If you have any other questions, feel free to reach out to us <a href="mailto:help@smooch.io">here</a>.</p>
+
+          <h1 id='references'>References</h1>
+<p>For more in-depth details on Smooch&rsquo;s APIs check out our API Reference documentation. The API reference documents every method and property available through Smooch.</p>
+
+<ul>
+<li><a href="http://docs.smooch.io/api/ios" target="_blank">iOS SDK Reference</a></li>
+<li><a href="http://docs.smooch.io/api/android" target="_blank">Android SDK Reference</a></li>
+<li><a href="https://github.com/smooch/smooch-js" target="_blank">Web Messenger Reference</a></li>
+<li><a href="/rest" target="_blank">REST API</a></li>
+</ul>
+<h2 id='upgrading-to-smooch'>Upgrading to Smooch</h2>
+<p>Upgrading the SDKs to Smooch requires some changes to your existing code. These changes are documented in our upgrade guides:</p>
+
+<ul>
+<li><a href="https://github.com/smooch/smooch-ios/releases/tag/v3.0.0" target="_blank">iOS Upgrade Guide</a></li>
+<li><a href="https://github.com/smooch/smooch-android/releases/tag/2.0.0" target="_blank">Android Upgrade Guide</a></li>
+<li><a href="https://github.com/smooch/smooch-js/releases/tag/2.0.0" target="_blank">Web Messenger Upgrade Guide</a></li>
+</ul>
+
+          <h1 id='adding-smooch-to-your-app'>Adding Smooch to your app</h1>
+<p>The Smooch library is distributed in both AAR and JAR format. If you are using Android Studio, follow the instructions for <a href="#android-studio-with-gradle">installation of the AAR package</a>.</p>
+
+<p><aside class="notice">The minimum supported SDK version is API level <strong>15</strong>, and your app must be compiled with at least API version <strong>21</strong>. If your app needs to support earlier versions of Android, you may still try to integrate, but it is untested and we cannot guarantee compatibility.
+</aside></p>
+<h2 id='android-studio-with-gradle'>Android Studio with Gradle</h2>
+<p><span class="badge"><a href="https://bintray.com/smoochorg/maven/smooch/_latestVersion"><img alt="Bintray" src="https://api.bintray.com/packages/smoochorg/maven/smooch/images/download.svg" /></a></span></p>
+
+<p>The Smooch library is hosted on <a href="https://bintray.com/smoochorg/maven/smooch">Bintray</a> and is available on <a href="http://jcenter.bintray.com/io/smooch/">JCenter</a>.</p>
+
+<p>Setup JCenter as a repository.</p>
+<pre class="highlight plaintext"><code>repositories {
+    jcenter()
+}
+</code></pre>
+
+<p>Add the dependencies right into your <code class="prettyprint">build.gradle</code> file.</p>
+<pre class="highlight plaintext"><code>compile 'io.smooch:core:latest.release'
+compile 'io.smooch:ui:latest.release'
+</code></pre>
+
+<p>Sync the Gradle project then add the necessary code to <a href="#initialize-smooch-in-your-app">initialize Smooch in your app</a>.</p>
+
+<p><aside class="notice">
+    Smooch uses a FileProvider to store photos.
+    If your application has a FileProvider specified in the manifest, <a href="#replacing-the-smooch-fileprovider">follow these instructions</a>
+</aside></p>
+<h2 id='initialize-smooch-in-your-app'>Initialize Smooch in your app</h2>
+<p>After following the steps above, your app is setup for working with the Smooch SDK. Before your code can invoke its functionality, you&rsquo;ll have to initialize the library using your app&rsquo;s token.</p>
+
+<p>This token is free and uniquely identifies your app and links it to the Smooch backend that does the heavy lifting necessary to bridge the gap between you and your users.</p>
+
+<p>You can find your token by <a href="https://app.smooch.io">logging into Smooch</a> and copying it from the settings page as shown below.</p>
+
+<p><img alt="App Token on Overview Page" src="../images/apptoken.png" /></p>
+
+<p>Once you&rsquo;ve located your token, use the code below to initialize Smooch.</p>
+
+<p>Add the following line of code to your <code class="prettyprint">onCreate</code> method on your <a href="http://developer.android.com/reference/android/app/Application.html">Application</a> class:</p>
+<pre class="highlight java"><code><span class="n">Smooch</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="s">"YOUR_APP_TOKEN"</span><span class="o">);</span>
+</code></pre>
+
+<p><aside class="notice">
+    Make sure to replace <code class="prettyprint">YOUR_APP_TOKEN</code> with your app token.
+</aside></p>
+
+<p>If you don&rsquo;t have an <code class="prettyprint">Application</code> class, we recommend that you create one to make sure Smooch is always initialized properly. If you don&rsquo;t have one, you can copy the following and save it to your application package.</p>
+<pre class="highlight java"><code><span class="kn">package</span> <span class="n">your</span><span class="o">.</span><span class="na">package</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.app.Application</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.smooch.core.Smooch</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">YourApplication</span> <span class="kd">extends</span> <span class="n">Application</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onCreate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+        <span class="n">Smooch</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="s">"YOUR_APP_TOKEN"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre>
+
+<p>You also need to <strong>declare</strong> your newly created <code class="prettyprint">Application</code> class in the <code class="prettyprint">&lt;application&gt;</code> tag in your <code class="prettyprint">AndroidManifest</code>.</p>
+<pre class="highlight xml"><code><span class="nt">&lt;application</span>
+    <span class="na">android:name=</span><span class="s">"your.package.YourApplication"</span><span class="nt">&gt;</span>
+    ...
+<span class="nt">&lt;/application&gt;</span>
+</code></pre>
+
+<p><aside class="notice">
+    Remember to replace <code class="prettyprint">your.package</code>, <code class="prettyprint">YourApplication</code>, <code class="prettyprint">YOUR_APP_TOKEN</code> by the appropriate names and your app token.
+</aside></p>
+<h3 id='displaying-the-smooch-user-interface'>Displaying the Smooch User Interface</h3>
+<p>Once you&rsquo;ve initialized Smooch, you&rsquo;re ready to try it out.</p>
+
+<p>Find a suitable place in your app&rsquo;s interface to invoke Smooch and use the code below to display the Smooch user interface. You can bring up Smooch whenever you think that your user will need access to help or a communication channel to contact you.</p>
+<pre class="highlight java"><code><span class="n">ConversationActivity</span><span class="o">.</span><span class="na">show</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</code></pre>
+
+<p>You should also take the time to <a href="#configuring-push-notifications">configure the push notifications setup</a>.</p>
+<h2 id='replacing-the-smooch-fileprovider'>Replacing the Smooch FileProvider</h2>
+<p><aside class="notice">
+    If you do not have a <code class="prettyprint">FileProvider</code> entry in your <code class="prettyprint">AndroidManifest.xml</code> file, you can safely ignore this section.
+    These steps will fix the <code class="prettyprint">Manifest merger failed : Attribute provider#android.support.v4.content.FileProvider@authorities</code> compile error
+</aside></p>
+
+<p>In order to replace the Smooch FileProvider with your own, please do the following:</p>
+
+<ol>
+<li><p>Add <code class="prettyprint">tools:replace=&quot;android:authorities&quot;</code> to the <code class="prettyprint">&lt;provider&gt;</code> entry.</p></li>
+<li><p>Add the following path to your <code class="prettyprint">android.support.FILE_PROVIDER_PATHS</code> resource file:</p></li>
+</ol>
+<pre class="highlight xml"><code><span class="nt">&lt;external-path</span> <span class="na">name=</span><span class="s">"dcim"</span> <span class="na">path=</span><span class="s">"DCIM"</span><span class="nt">/&gt;</span>
+</code></pre>
+
+<ol>
+<li>When initializing Smooch, call <code class="prettyprint">settings.setFileProviderAuthorities(authoritiesString);</code> on the settings object.</li>
+</ol>
+<pre class="highlight java"><code><span class="n">Settings</span> <span class="n">settings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Settings</span><span class="o">(</span><span class="n">appToken</span><span class="o">);</span>
+<span class="n">settings</span><span class="o">.</span><span class="na">setFileProviderAuthorities</span><span class="o">(</span><span class="n">authoritiesString</span><span class="o">);</span>
+<span class="n">Smooch</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">settings</span><span class="o">);</span>
+</code></pre>
+
+          <h2 id='configuring-push-notifications'>Configuring push notifications</h2>
+<p>Push notifications are a great, unobtrusive way to let your users know that a reply to their message has arrived.</p>
+<h3 id='step-1--generate-a-fcm-configuration-file-for-your-android-project'>Step 1. Generate a FCM configuration file for your Android project</h3>
+<p><aside class="notice">
+Following these steps will enable cloud messaging for your app and create a server API key
+</aside></p>
+
+<ol>
+<li><p>Go to Google&rsquo;s <a href="https://console.firebase.google.com">Firebase console</a></p></li>
+<li><p>If you do not have a project already, create a new one</p></li>
+<li><p>Once created, click on &ldquo;Add Firebase to your Android app&rdquo; and follow the instructions to generate your <code class="prettyprint">google-services.json</code> file (for your package name, copy and paste the package used in your application&rsquo;s AndroidManifest.xml file)</p></li>
+<li><p>Save the <code class="prettyprint">google-services.json</code> file generated by the tool at the root of your Android application</p></li>
+</ol>
+<h3 id='step-2--configure-push-notifications-in-smooch'>Step 2. Configure push notifications in Smooch</h3>
+<ol>
+<li><p>Go to <a href="https://app.smooch.io">https://app.smooch.io</a> and log into your account.</p></li>
+<li><p>On the Overview page, select <strong>Android</strong></p></li>
+<li><p>Enter your <em>Server API Key</em> and <em>Sender ID</em> (these can be retrieved by going to <code class="prettyprint">Manage</code> for your app and heading to the <code class="prettyprint">CLOUD MESSAGING</code> section)</p></li>
+</ol>
+<h3 id='step-3--configure-android-application-to-accept-push'>Step 3. Configure Android application to accept push</h3>
+<ol>
+<li><p>Add the dependency to your project&rsquo;s top-level <code class="prettyprint">build.gradle</code>:</p>
+<pre class="highlight plaintext"><code>classpath 'com.google.gms:google-services:3.0.0'
+</code></pre></li>
+<li><p>Add the plugin to the bottom of your app-level <code class="prettyprint">build.gradle</code>:</p>
+<pre class="highlight plaintext"><code>apply plugin: 'com.google.gms.google-services'
+</code></pre></li>
+</ol>
+
+<p><aside class="notice">
+Note: If your app has its own token registration, you need to trigger Smooch push notifications by calling the <code class="prettyprint">triggerSmoochNotification</code> method on <a href="http://docs.smooch.io/api/android/io/smooch/core/GcmService.html"><code class="prettyprint">FcmService</code></a> class.</aside></p>
+<h3 id='step-4--test-it-out'>Step 4. Test it out!</h3>
+<p><aside class="warning">
+You can&rsquo;t receive push notifications in the Android simulator, you must use a physical device.
+</aside></p>
+
+<ol>
+<li><p>Kill and restart your app.</p></li>
+<li><p>Launch Smooch.</p></li>
+<li><p>Send a message.</p></li>
+<li><p>Press the home button or navigate away from the conversation.</p></li>
+<li><p>Reply to the message from your choice of Smooch integrated service</p></li>
+</ol>
+
+<p>You&rsquo;ll receive a notification on the phone!</p>
+
+          <h2 id='configuring-agent-images'>Configuring agent images</h2>
+<p>You can set an app maker&rsquo;s image in your app (as pictured below) by creating a <a href="http://www.gravatar.com/">Gravatar</a> image associated with the app maker&rsquo;s email address.
+<img style="width:50%; min-width:200px; max-width:400px;" src="/images/agent_thumb.png" alt="Set agent images"/></p>
+
+          <h1 id='users'>Users</h1>
+          <h2 id='user-data'>User data</h2>
+<p>Smooch allows you to specify profile information about your users so that you can better understand the context around a user&rsquo;s message.</p>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
+    <span class="na">appToken</span><span class="p">:</span> <span class="s1">'your_app_token'</span><span class="p">,</span>
+    <span class="na">givenName</span><span class="p">:</span> <span class="s1">'Doctor'</span><span class="p">,</span>
+    <span class="na">surname</span><span class="p">:</span> <span class="s1">'Who?'</span><span class="p">,</span>
+    <span class="na">email</span><span class="p">:</span> <span class="s1">'the-doctor@smooch.io'</span><span class="p">,</span>
+    <span class="na">properties</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'customProp'</span><span class="p">:</span> <span class="s1">'whatever you please'</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<h3 id='naming-the-current-user'>Naming the current user</h3>
+<p>Once you set the user&rsquo;s name it will be persisted by Smooch so any future message from this user contain the value you provided. If the user&rsquo;s information changes, simply call the method a second time and the new information will overwrite it.</p>
+<pre class="highlight objective_c"><code><span class="cp">#import &lt;Smooch/Smooch.h&gt;
+</span>
+<span class="p">[</span><span class="n">SKTUser</span> <span class="nf">currentUser</span><span class="p">].</span><span class="n">firstName</span> <span class="o">=</span> <span class="s">@"Doctor"</span><span class="p">;</span>
+<span class="p">[</span><span class="n">SKTUser</span> <span class="nf">currentUser</span><span class="p">].</span><span class="n">lastName</span> <span class="o">=</span> <span class="s">@"Who"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="err">#</span><span class="kd">import</span> <span class="o">&lt;</span><span class="kt">Smooch</span><span class="o">/</span><span class="kt">Smooch</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+
+<span class="kt">SKTUser</span><span class="o">.</span><span class="nf">currentUser</span><span class="p">()</span><span class="o">.</span><span class="n">firstName</span> <span class="o">=</span> <span class="s">"Doctor"</span>
+<span class="kt">SKTUser</span><span class="o">.</span><span class="nf">currentUser</span><span class="p">()</span><span class="o">.</span><span class="n">lastName</span> <span class="o">=</span> <span class="s">"Who"</span>
+</code></pre>
+<pre class="highlight java"><code><span class="kn">import</span> <span class="nn">io.smooch.core.User</span><span class="o">;</span>
+
+<span class="n">User</span><span class="o">.</span><span class="na">getCurrentUser</span><span class="o">().</span><span class="na">setFirstName</span><span class="o">(</span><span class="s">"Artour"</span><span class="o">);</span>
+<span class="n">User</span><span class="o">.</span><span class="na">getCurrentUser</span><span class="o">().</span><span class="na">setLastName</span><span class="o">(</span><span class="s">"Babaev"</span><span class="o">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">updateUser</span><span class="p">({</span>
+    <span class="na">givenName</span><span class="p">:</span> <span class="s1">'Doctor'</span><span class="p">,</span>
+    <span class="na">surname</span><span class="p">:</span> <span class="s1">'Who'</span>
+<span class="p">})</span>
+</code></pre>
+
+          <h3 id='setting-the-user-email-address'>Setting the user email address</h3>
+<p>Setting the user&rsquo;s e-mail makes this information available in the user profile and allows Smooch to lets you see their gravatar. </p>
+<pre class="highlight objective_c"><code><span class="cp">#import &lt;Smooch/Smooch.h&gt;
+</span>
+<span class="p">[</span><span class="n">SKTUser</span> <span class="nf">currentUser</span><span class="p">].</span><span class="n">email</span> <span class="o">=</span> <span class="s">@"bob@example.com"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="err">#</span><span class="kd">import</span> <span class="o">&lt;</span><span class="kt">Smooch</span><span class="o">/</span><span class="kt">Smooch</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+
+<span class="kt">SKTUser</span><span class="o">.</span><span class="nf">currentUser</span><span class="p">()</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s">"bob@example.com"</span>
+</code></pre>
+<pre class="highlight java"><code><span class="kn">import</span> <span class="nn">io.smooch.core.User</span><span class="o">;</span>
+
+<span class="n">User</span><span class="o">.</span><span class="na">getCurrentUser</span><span class="o">().</span><span class="na">setEmail</span><span class="o">(</span><span class="s">"2ez@4rtz.com"</span><span class="o">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">updateUser</span><span class="p">({</span>
+    <span class="na">email</span><span class="p">:</span> <span class="s1">'the-doctor@smooch.io'</span>
+<span class="p">})</span>
+</code></pre>
+
+<p>Setting or updating the user email will send a notification inside your configured business system. Here&rsquo;s how it looks in Slack for example :</p>
+
+<p><img alt="Email updated in Slack" src="../images/email_updated.png" /></p>
+<h3 id='setting-the-signed-up-date'>Setting the signed up date</h3>
+<p>Setting the user&rsquo;s signed up date allows Whispers based on that date to be sent to the right people. If not set, we&rsquo;ll default to the first time Smooch sees the user, which is the moment the <code class="prettyprint">init</code> call is made for the first time for a given user. It&rsquo;s best to set it yourself to avoid sending a welcome message to users that in fact signed up a long while ago.</p>
+<pre class="highlight objective_c"><code><span class="cp">#import &lt;Smooch/Smooch.h&gt;
+</span>
+<span class="p">[</span><span class="n">SKTUser</span> <span class="nf">currentUser</span><span class="p">].</span><span class="n">signedUpAt</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDate</span> <span class="nf">date</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="err">#</span><span class="kd">import</span> <span class="o">&lt;</span><span class="kt">Smooch</span><span class="o">/</span><span class="kt">Smooch</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+
+<span class="kt">SKTUser</span><span class="o">.</span><span class="nf">currentUser</span><span class="p">()</span><span class="o">.</span><span class="n">signedUpAt</span> <span class="o">=</span> <span class="kt">NSDate</span><span class="p">()</span>
+</code></pre>
+<pre class="highlight java"><code><span class="kn">import</span> <span class="nn">io.smooch.core.User</span><span class="o">;</span>
+
+<span class="n">User</span><span class="o">.</span><span class="na">getCurrentUser</span><span class="o">().</span><span class="na">setSignedUpAt</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">(</span><span class="mi">1420070400000</span><span class="n">l</span><span class="o">));</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">updateUser</span><span class="p">({</span>
+    <span class="na">signedUpAt</span><span class="p">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="s2">"Nov 6, 2013"</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre>
+<h3 id='adding-custom-profile-information'>Adding custom profile information</h3>
+<p>You can also specify any other kind of profile information that will be sent along when users contact you. You can also use any properties you store using this API to send targeted messages to your users proactively using our Whispers feature.</p>
+<pre class="highlight objective_c"><code><span class="cp">#import &lt;Smooch/Smooch.h&gt;
+</span>
+<span class="p">[[</span><span class="n">SKTUser</span> <span class="nf">currentUser</span><span class="p">]</span> <span class="nf">addProperties</span><span class="p">:</span><span class="err">@</span><span class="p">{</span> <span class="s">@"nickname"</span> <span class="o">:</span> <span class="s">@"Lil Big Daddy Slim"</span><span class="p">,</span> <span class="s">@"weight"</span> <span class="o">:</span> <span class="mi">@650</span><span class="p">,</span> <span class="s">@"premiumUser"</span> <span class="o">:</span> <span class="nb">@YES</span> <span class="p">}];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="err">#</span><span class="kd">import</span> <span class="o">&lt;</span><span class="kt">Smooch</span><span class="o">/</span><span class="kt">Smooch</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+
+<span class="kt">SKTUser</span><span class="o">.</span><span class="nf">currentUser</span><span class="p">()</span><span class="o">.</span><span class="nf">addProperties</span><span class="p">([</span> <span class="s">"nickname"</span> <span class="p">:</span> <span class="s">"Lil Big Daddy Slim"</span><span class="p">,</span> <span class="s">"weight"</span> <span class="p">:</span> <span class="mi">650</span><span class="p">,</span> <span class="s">"premiumUser"</span> <span class="p">:</span> <span class="kc">true</span> <span class="p">])</span>
+</code></pre>
+<pre class="highlight java"><code><span class="kn">import</span> <span class="nn">io.smooch.core.User</span><span class="o">;</span>
+
+<span class="kd">final</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">customProperties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">customProperties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"customDate"</span><span class="o">,</span> <span class="k">new</span> <span class="n">Date</span><span class="o">());</span>
+<span class="n">customProperties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"customFlag"</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+<span class="n">customProperties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"customDigit"</span><span class="o">,</span> <span class="mi">322</span><span class="o">);</span>
+<span class="n">User</span><span class="o">.</span><span class="na">getCurrentUser</span><span class="o">().</span><span class="na">addProperties</span><span class="o">(</span><span class="n">customProperties</span><span class="o">);</span>
+</code></pre>
+
+          <p>You can grab the current user with <code class="prettyprint">User.getCurrentUser</code> then set basic information with <code class="prettyprint">setFirstName</code>, <code class="prettyprint">setLastName</code>, <code class="prettyprint">setEmail</code> and <code class="prettyprint">setSignedUpAt</code>. You can also set your own custom properties by sending a map into <code class="prettyprint">addProperties</code>.</p>
+
+          <p><aside class="notice">
+Note: The maximum size for a property key is 100 bytes and the maximum property string value is 800 bytes. User keys and string values that exceed these limits will be truncated.
+</aside></p>
+
+          <h2 id='sensitive-user-data'>Sensitive user data</h2>
+<p>Smooch sends messages using standard encryption protocols, but in order to keep your users completely safe, the best way is to inform your users they should never send sensitive data through Smooch messages, for example: credit card numbers, passwords, sensitive documents, and private photos.</p>
+
+          <p>Smooch allows you to identify new users on the fly, engage with them in a single conversation thread across multiple devices, and associate user and device profile information so that you can better understand the context of a user&rsquo;s message.</p>
+<h2 id='users-on-multiple-devices'>Users on multiple devices</h2>
+<p>You may have users using your app on multiple devices. For example, suppose they have your app installed on both their iPhone and their iPad. You might also have Smooch integrated in both your mobile app as well as on your web site.</p>
+
+<p>If you want the user to see the same conversation across devices you can do so by assigning your users a <code class="prettyprint">userId</code>. This will link a user across all devices and platforms that have integrated with your Smooch app. Specifying a <code class="prettyprint">userId</code> also facilitates <a href="#securing-your-users">user authentication</a>.</p>
+
+<p>The <code class="prettyprint">userId</code> is a string that can be an email, GUID, or an existing ID from your own user directory. The <code class="prettyprint">userId</code> must be unique within a given Smooch app, and it will only link devices within a single Smooch app.</p>
+
+<p><aside class="warning">
+<strong>Caution:</strong> If you&rsquo;re specifying a <code class="prettyprint">userId</code> then in order to keep conversations private we strongly suggest <a href="#authenticating-users-optional">authenticating your users</a>. If a <code class="prettyprint">userId</code> is used without a JWT credential, then anyone who can discover a user&rsquo;s <code class="prettyprint">userId</code> could potentially eavesdrop on the conversation.
+</aside></p>
+
+<p>After Smooch has been initialized, you can set the <code class="prettyprint">userId</code> using the <code class="prettyprint">login</code> API:</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">Smooch</span> <span class="nf">login</span><span class="p">:</span><span class="n">yourUserId</span> <span class="nf">jwt</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="kt">Smooch</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="n">yourUserId</span><span class="p">,</span> <span class="nv">jwt</span><span class="p">:</span><span class="kc">nil</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">yourUserId</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight java"><code><span class="n">Smooch</span><span class="o">.</span><span class="na">login</span><span class="o">(</span><span class="n">yourUserId</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</code></pre>
+
+<p>In most use cases Smooch is initialized synchronously as your app loads. For this reason, once you&rsquo;ve set your user&rsquo;s <code class="prettyprint">userId</code> for the first time it is recommended that you store that <code class="prettyprint">userId</code> locally on the device so that it does not need to be fetched again the next time the user opens the app. If your app knows the <code class="prettyprint">userId</code> at app boot time, instead of calling <code class="prettyprint">login</code> you can specify the <code class="prettyprint">userId</code> during Smooch initialization like so:</p>
+<pre class="highlight objective_c"><code><span class="n">SKTSettings</span><span class="o">*</span> <span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">SKTSettings</span> <span class="nf">settingsWithAppToken</span><span class="p">:</span><span class="s">@"YOUR_APP_TOKEN"</span><span class="p">];</span>
+<span class="n">settings</span><span class="p">.</span><span class="n">userId</span> <span class="o">=</span> <span class="n">yourUserId</span><span class="p">;</span>
+<span class="p">[</span><span class="n">Smooch</span> <span class="nf">initWithSettings</span><span class="p">:</span><span class="n">settings</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">settings</span> <span class="o">=</span> <span class="kt">SKTSettings</span><span class="p">(</span><span class="nv">appToken</span><span class="p">:</span> <span class="s">"YOUR_APP_TOKEN"</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">userId</span> <span class="o">=</span> <span class="n">yourUserId</span>
+<span class="kt">Smooch</span><span class="o">.</span><span class="nf">initWithSettings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
+    <span class="na">appToken</span><span class="p">:</span> <span class="s1">'YOUR_APP_TOKEN'</span><span class="p">,</span>
+    <span class="na">userId</span><span class="p">:</span> <span class="nx">yourUserId</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight java"><code><span class="n">Settings</span> <span class="n">settings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Settings</span><span class="o">(</span><span class="s">"YOUR_APP_TOKEN"</span><span class="o">);</span>
+<span class="n">settings</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="n">yourUserId</span><span class="o">);</span>
+<span class="n">Smooch</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">settings</span><span class="o">);</span>
+</code></pre>
+<h3 id='omitting-the-userid'>Omitting the userId</h3>
+<p>Smooch will work perfectly fine without a <code class="prettyprint">userId</code>. Profile information can still be included but the user will only be able to access the conversation from the device they&rsquo;re currently using. This means that even if you specify the same profile information, if the same individual opens Smooch on a new device, or runs your web app in an incognito browser session, they will see a newly created empty conversation when they open Smooch. Only the <code class="prettyprint">userId</code> can be used to synchronize a conversation across devices.</p>
+
+<p>A <code class="prettyprint">userId</code> can also be omitted at first and added at a later time. If you deploy an update to your app that assigns an existing user with a new <code class="prettyprint">userId</code> that they didn&rsquo;t have before, any existing conversation history they have will be preserved and their messages will start being synchronized across all devices where that <code class="prettyprint">userId</code> is being used. This is particularly useful if a user opens Smooch and starts a conversation before having logged in to your app.</p>
+<h3 id='switching-users'>Switching users</h3>
+<p>If your app allows a shared device to switch between multiple user identities you can call the <code class="prettyprint">login</code> API multiple times to switch between different <code class="prettyprint">userId</code>s.</p>
+<h4 id='logging-out'>Logging out</h4>
+<p>Your app may have a logout function which brings users back to a login screen. In this case you would want to revert Smooch to a pre-login state. You can do this by calling the <code class="prettyprint">logout</code> API.</p>
+
+<p>Calling <code class="prettyprint">logout</code> will disconnect your user from any <code class="prettyprint">userId</code> they were previously logged in with and it will remove any conversation history stored on the device. Logging out will <em>not</em> disable Smooch. While logged out, the user is free to start a new conversation but they will show up as if <code class="prettyprint">userId</code> was <a href="#omitting-the-userid">omitted</a> during Smooch initialization.</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">Smooch</span> <span class="nf">logout</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="kt">Smooch</span><span class="o">.</span><span class="nf">logout</span><span class="p">()</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">logout</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight java"><code><span class="n">Smooch</span><span class="o">.</span><span class="na">logout</span><span class="o">();</span>
+</code></pre>
+
+          <h2 id='authenticating-users-optional'>Authenticating users (optional)</h2>
+<p>Provided you&rsquo;re <a href="#users-on-multiple-devices">assigning <code class="prettyprint">userId</code>s to your users</a>, you can authenticate users to Smooch by issuing signed <a href="http://jwt.io">JSON web token</a> (JWT) credentials. This option requires your app to be connected to your own secure web service, or to a 3rd party equivalent such as <a href="https://parse.com">parse.com</a>. There are JWT libraries available supporting a wide variety of popular languages and platforms.</p>
+
+<p>To issue JWTs:</p>
+
+<ol>
+<li><p>Generate a secret key for your Smooch app. You can do this from the <a href="https://app.smooch.io">Smooch dashboard</a> under the Settings tab.</p>
+
+<p><img alt="Secret Keys" src="../images/secret_keys.png" /></p></li>
+<li><p>Implement server side code to sign new JWTs using the key ID and secret provided. The JWT header must specify the key ID (<code class="prettyprint">kid</code>). The JWT payload must include a <code class="prettyprint">scope</code> claim of &lsquo;appUser&rsquo; and a <code class="prettyprint">userId</code> claim which you&rsquo;ve assigned to the app user.</p>
+
+<p>A node.js sample is provided below:</p>
+<pre class="highlight plaintext"><code>var jwt = require('jsonwebtoken');
+var KEY_ID = '55e9f9bf7a0ce5ca2d429c17';
+var SECRET = 'BFJJ88naxc5PZNAMU9KpBNTR';
+
+var signJwt = function(userId) {
+    return jwt.sign({
+        scope: 'appUser',
+        userId: userId
+    },
+    SECRET,
+    {
+        headers: {
+            alg: 'HS256',
+            typ: 'JWT',
+            kid: KEY_ID
+        }
+    });
+}
+</code></pre></li>
+<li><p>Issue a JWT for each user. You should tie-in the generation and delivery of this JWT with any existing user login process used by your app.</p></li>
+<li><p>Specify the JWT when calling <code class="prettyprint">login</code> on the client:</p>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">Smooch</span> <span class="nf">login</span><span class="p">:</span><span class="n">yourUserId</span> <span class="nf">jwt</span><span class="p">:</span><span class="n">yourJwt</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="kt">Smooch</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="n">yourUserId</span><span class="p">,</span> <span class="nv">jwt</span><span class="p">:</span><span class="n">yourJwt</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">login</span><span class="p">(</span><span class="nx">yourUserId</span><span class="p">,</span> <span class="nx">yourJwt</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight java"><code><span class="n">Smooch</span><span class="o">.</span><span class="na">login</span><span class="o">(</span><span class="n">yourUserId</span><span class="o">,</span> <span class="n">yourJwt</span><span class="o">);</span>
+</code></pre></li>
+</ol>
+
+<p>Securing a <code class="prettyprint">userId</code> happens automatically by using a JWT for the first time. Once a JWT is used to authenticate an individual <code class="prettyprint">userId</code> with Smooch, that specific <code class="prettyprint">userId</code> will require a JWT credential in all future init or login calls made to Smooch.</p>
+
+<p>Once you&rsquo;ve issued a <code class="prettyprint">userId</code> and <code class="prettyprint">JWT</code> to a user for the first time you can save them to the device locally. Having done this, instead of making a separate call to <code class="prettyprint">login</code> you can provide Smooch with the <code class="prettyprint">userId</code> and <code class="prettyprint">JWT</code> parameters during app initialization:</p>
+<pre class="highlight objective_c"><code><span class="n">SKTSettings</span><span class="o">*</span> <span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">SKTSettings</span> <span class="nf">settingsWithAppToken</span><span class="p">:</span><span class="s">@"YOUR_APP_TOKEN"</span><span class="p">];</span>
+<span class="n">settings</span><span class="p">.</span><span class="n">userId</span> <span class="o">=</span> <span class="n">yourUserId</span><span class="p">;</span>
+<span class="n">settings</span><span class="p">.</span><span class="n">jwt</span> <span class="o">=</span> <span class="n">yourJwt</span><span class="p">;</span>
+<span class="p">[</span><span class="n">Smooch</span> <span class="nf">initWithSettings</span><span class="p">:</span><span class="n">settings</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">settings</span> <span class="o">=</span> <span class="kt">SKTSettings</span><span class="p">(</span><span class="nv">appToken</span><span class="p">:</span> <span class="s">"YOUR_APP_TOKEN"</span><span class="p">)</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">userId</span> <span class="o">=</span> <span class="n">yourUserId</span>
+<span class="n">settings</span><span class="o">.</span><span class="n">jwt</span> <span class="o">=</span> <span class="n">yourJwt</span>
+<span class="kt">Smooch</span><span class="o">.</span><span class="nf">initWithSettings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
+    <span class="na">appToken</span><span class="p">:</span> <span class="s1">'YOUR_APP_TOKEN'</span><span class="p">,</span>
+    <span class="na">userId</span><span class="p">:</span> <span class="nx">yourUserId</span><span class="p">,</span>
+    <span class="na">jwt</span><span class="p">:</span> <span class="nx">yourJwt</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight java"><code><span class="n">Settings</span> <span class="n">settings</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Settings</span><span class="o">(</span><span class="s">"YOUR_APP_TOKEN"</span><span class="o">);</span>
+<span class="n">settings</span><span class="o">.</span><span class="na">setUserId</span><span class="o">(</span><span class="n">yourUserId</span><span class="o">);</span>
+<span class="n">settings</span><span class="o">.</span><span class="na">setJWT</span><span class="o">(</span><span class="n">yourJwt</span><span class="o">);</span>
+<span class="n">Smooch</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">settings</span><span class="o">);</span>
+</code></pre>
+
+<p><aside class="warning">
+If your secret key is ever compromised you can generate a new one. Smooch will accept a JWT as long as it contains all required fields and is signed with any of your Smooch app&rsquo;s valid secret keys. Deleting a secret key will invalidate all JWTs that were signed with it.
+</aside></p>
+
+          <h1 id='action-buttons'>Action Buttons</h1>
+<p>Action buttons can be used for a variety of different purposes, and come in many forms. The current supported types of actions are:</p>
+
+<ul>
+<li><a href="#links">Link Buttons</a> - Used to refer the user somewhere else (a webpage, phone number, mailto, deep link, etc.).</li>
+<li><a href="#requesting-payments">Buy Buttons</a> - Used to request payment from the user.</li>
+<li><a href="#replies">Reply Buttons</a> - Used to present the user with suggested reply options. Cannot be mixed with other action types.</li>
+<li><a href="#postbacks">Postback Buttons</a> - Used to trigger server-side logic when pressed.</li>
+</ul>
+
+<p><aside class="notice">
+Actions can be sent through the <a href="http://docs.smooch.io/rest#action-buttons">REST API</a>, or by using one of the <a href="http://blog.smooch.io/how-to-make-buttons-images-payments-with-smooch-a-syntax-cheatsheet/">shorthand syntaxes</a> in your message text.
+</aside></p>
+
+          <h2 id='links'>Links</h2>
+<p>You can send a link action button to your users with the following syntax:</p>
+<pre class="highlight plaintext"><code>%[Button label here](http://anyurl.com)
+</code></pre>
+
+<p>This works from any channel you&rsquo;ve configured with Smooch.</p>
+
+<p>When the user taps your button, the appropriate intent is launched based on the URL, so it can be whatever you want! Anything ranging from a web url, deep link or play store link works like a charm.</p>
+
+<p><span class="half-width-img"><img alt="Action buttons" src="../images/action_button_android.png" /></span></p>
+
+<p><aside class="notice">
+Buttons will always be appended at the bottom of your message bubble.
+</aside></p>
+<h3 id='play-store-link'>Play store link</h3>
+<p>For a play store link, you&rsquo;ll need your app&rsquo;s package. The URL of your app&rsquo;s page in the play store will have your package name at the end. The link to use in the Action input will then be <code class="prettyprint">market://details?id=&lt;package_name&gt;</code></p>
+
+<p><img alt="Package Name" src="../images/package_name_from_url.png" /></p>
+
+          <h2 id='replies'>Replies</h2>
+<p>Reply buttons are a great way to walk the user through a specific flow, by suggesting various courses of action. A reply button, once tapped, will insert a reply on behalf of the user. Suggested replies are invaluable when building a bot or automated conversation flow, because they keep your user focused and provide clear instructions on how to proceed.</p>
+
+<p>Each reply button has an associated <code class="prettyprint">payload</code>, which should uniquely identify the intent of the action. When the user answers with one of the suggested replies, this payload will be included as part of the message object. The message will then be delivered as a normal message, appearing in any business system integrations, and delivered to webhooks subscribed to the <code class="prettyprint">message:appUser</code> event.</p>
+
+<p>You can send a reply button with the following syntax:</p>
+<pre class="highlight plaintext"><code>%[Button label here](reply:PAYLOAD_HERE)
+</code></pre>
+
+<p><aside class="notice">
+Reply buttons are mutually exclusive with other action types. When specifying a reply button, all other actions on the same message must also be replies, otherwise the message will be considered invalid.
+</aside>
+<aside class="notice">
+Reply buttons are currently supported on Facebook Messenger, LINE, WeChat, Telegram, SMS, and Email Messaging.
+</aside></p>
+
+          <h2 id='postbacks'>Postbacks</h2>
+<p>Postback buttons are a great way to enhance your conversations, since they can trigger server-side logic when a user clicks on them. When you send the postback button, you can attach a <code class="prettyprint">payload</code> and when the user clicks on it, it will trigger webhooks listening to the <code class="prettyprint">postback</code> trigger. The payload associated with the action clicked by the user will be included in the webhook body. This allows you to respond to the press of a button from your backend. The server-side logic can use the <code class="prettyprint">payload</code> to run different code based on the context of the conversation. These features are very useful when building a bot.</p>
+
+<p>Postback buttons are similar in function to <a href="#replies">reply buttons</a>, but with a few key differences:</p>
+
+<ol>
+<li>Postbacks are multi-use. The button does not disappear after the user taps on it, and therefore it can be clicked many times.</li>
+<li>Postbacks do not echo the user&rsquo;s selection in the conversation history.</li>
+<li>Postbacks use the <code class="prettyprint">postback</code> webhook event, rather than the <code class="prettyprint">message:appUser</code> event.</li>
+</ol>
+
+<p>You can send your users a postback button with the following syntax:</p>
+<pre class="highlight plaintext"><code>%[Button label here](postback:PAYLOAD_HERE)
+</code></pre>
+
+          <h1 id='images'>Images</h1>
+<p>To send the user an image from one of your Business System integrations, use the following syntax with a publicly visible web url:</p>
+<pre class="highlight plaintext"><code>![](http://url-of.the/image.jpg)
+</code></pre>
+
+<p>This works from any channel you configured to use with Smooch. You can also use the <a href="/rest#upload-image">REST API</a> to upload images.</p>
+
+<p><aside class='notice'>Images can&rsquo;t be sent along with text. On most frontend channels, only the image will be displayed.</aside>
+<aside class='notice'>Only one image per message is supported; multiple image syntaxes in a same message will be rendered as links.</aside></p>
+
+          <h1 id='business-app-integrations'>Business App Integrations</h1>
+          <h2 id='email'>Email</h2>
+<p>The Email integration allows you to receive Smooch messages in your inbox.</p>
+
+<p>If Email is enabled, when users send you a message using Smooch, you will receive an email at the configured address(es). This e-mail contains the user&rsquo;s message, device information, and any profile information about the user that you captured in your app. You can respond to your user&rsquo;s message by responding directly to the email.</p>
+
+<p><img src="/images/email_with_context.png" alt="Drawing" style="width: 80%;"/></p>
+<h3 id='getting-help-from-your-team'>Getting help from your team</h3>
+<p>If you want multiple team members to respond to your Smooch requests, you can specify multiple email addresses, or use a mailing list. Whenever a team member replies, the incoming email address and associated name will be used to determine the team member displayed to the user alongside the message.</p>
+
+          <h2 id='slack'>Slack</h2>
+<p>Slack is a communication tool that combines the best things about chat, email and the web to group all of your team&rsquo;s conversations and workflow into one beautiful, searchable place.</p>
+
+<p>Smooch has a Slack integration that allows your team to effortlessly speak to your app&rsquo;s users, without leaving Slack.</p>
+<h3 id='configuring-slack'>Configuring Slack</h3>
+<p>Click the &ldquo;Connect to Slack&rdquo; button on the Slack integration page.</p>
+
+<p><img style="width:50%; min-width:400px; max-width:800px;" src="/images/connecttoslack.png" alt="Connect to Slack"></p>
+
+<p>This will send you to a Slack page where you will choose which slack team you want to add Smooch to, and it will show you the set of permissions Smooch is requesting in order to function. Once all is done, you&rsquo;ll be redirected back to Smooch. That&rsquo;s it, you&rsquo;re up and running.</p>
+
+<p>When users send you messages, Smooch posts them to Slack. If it&rsquo;s a new conversation, a notification will appear in your dispatch channel in Slack. Smooch will choose <code class="prettyprint">#general</code> as your dispatch channel by default, and you can change this if you wish. The dispatch notification contains a link to a channel associated to the specific user that sent you the message.</p>
+
+<p>By default, Smooch will generate random channel names for users who start conversations. If you want the channel names to be relevant, you must add a <a href="#user-data">first name, last name or email to the user</a>.</p>
+<h3 id='talking-to-the-user'>Talking to the User</h3>
+<p>From a channel associated with a user, you can get more information on the user and reply to their questions.</p>
+
+<p>The messages you send in this new channel are not visible to your user. We do this so that you can invite teammates to collaborate on the user&rsquo;s issue without exposing your internal conversation.</p>
+
+<p>When you&rsquo;re ready to send a message to the user, simply use Smooch&rsquo;s slash command:</p>
+<pre class="highlight plaintext"><code>/sk TYPE YOUR MESSAGE HERE
+</code></pre>
+
+<p>You&rsquo;ll get a notification in the channel confirming that the message was received.</p>
+
+<p>If you want to consult any <a href="#user-data">user data</a> that you&rsquo;ve associated with the user in order to aid the help process, simply use the command below:</p>
+<pre class="highlight plaintext"><code>/sk !profile
+</code></pre>
+
+          <h2 id='help-scout'>Help Scout</h2>
+<p><a href="http://www.helpscout.net/">Help Scout</a> is a scalable, elegant and intuitive help desk solution. By connecting Smooch to Help Scout, you can manage in-app conversations you have with your users directly from Help Scout. This way, you can use the same system to handle your team&rsquo;s e-mail and in-app support channels. Unlike other Help Scout conversations, agent replies in conversations initiated by Smooch app users won&rsquo;t be sent by email, instead they will appear directly in the app.</p>
+<h3 id='configuring-help-scout-to-work-with-smooch'>Configuring Help Scout to work with Smooch</h3>
+<p>Configuring Help Scout is super easy. All you have to do is copy/paste a Help Scout API key into our integration page.</p>
+
+<ol>
+<li><p>Log in to your Help Scout account, go to &ldquo;Your Profile&rdquo; -&gt; &ldquo;API Keys&rdquo; and generate an API key.</p></li>
+<li><p>On the Help Scout page in your <a href="https://app.smooch.io">Smooch admin area</a>, paste the API key into the field that says &ldquo;Paste API Key here.&rdquo;</p></li>
+<li><p>Now, pick the mailbox you want to receive app user messages in, and next time one of your users messages you using Smooch, the conversation will appear in the Help Scout mailbox.</p></li>
+</ol>
+
+<p><img style="width:50%; min-width:400px; max-width:800px;" src="/images/helpscout_settings.png" alt="Configure Help Scout integration page"></p>
+<h3 id='instant-messaging-from-a-help-scout-mailbox'>Instant messaging from a Help Scout mailbox</h3>
+<p>You can change or delete the Help Scout mailbox that Smooch sends messages to, but you should note that conversations will not automatically migrate to the new mailbox. You must move the conversations you wish to have in the new mailbox via the Help Scout UI. Otherwise they will continue in the previously configured mailbox. Update your settings before deleting a Help Scout mailbox. If the mailbox configured on Smooch no longer exists, messages will be lost.</p>
+
+          <h2 id='hipchat'>HipChat</h2>
+<p>HipChat is a team-based chat tool that helps to group all of your team&rsquo;s conversations and workflow into one beautiful, searchable place.</p>
+
+<p>Smooch has a HipChat integration that allows your team to communicate with your app&rsquo;s users, without leaving HipChat.</p>
+<h3 id='configuring-hipchat'>Configuring HipChat</h3><h4 id='step-1--authorize-smooch-so-that-it-can-talk-to-your-hipchat'>Step 1. Authorize Smooch so that it can talk to your HipChat</h4>
+<p><br/>
+<img style="width:50%; min-width:400px; max-width:800px;" src="/images/hipchat_smooch_integration.png" alt="HipChat integration"></p>
+<h4 id='step-2---'>Step 2. &hellip;</h4>
+<p><img alt="There is no Step 2" src="../images/step_2.png" />
+<br/></p>
+
+<p>HipChat Connect has allowed Smooch to integrate into HipChat in some awesome ways. 
+<br/>
+You can easily view your active conversations and user profiles at a glance.</p>
+
+<p><img alt="At a glance" src="../images/hipchat_glance.png" />
+<br/></p>
+
+<p>We&rsquo;ve also added some handy options to the context menu so that you can easily use Smooch&rsquo;s features directly within HipChat.</p>
+
+<p><img alt="HipChat actions" src="../images/hipchat_actions.png" /></p>
+
+<p>This makes adding internal notes for fellow colleagues really easy.</p>
+
+<p><img style="width:50%; min-width:400px; max-width:800px;" src="/images/hipchat_note.png" alt="Note"></p>
+
+<p>And you can send your users action buttons through an interface we baked specially for HipChat.</p>
+
+<p><br/>
+<img style="width:50%; min-width:400px; max-width:800px;" src="/images/hipchat_add_action.png" alt="HipChat add action"></p>
+
+          <h2 id='zendesk'>Zendesk</h2>
+<p>Zendesk is a CRM platform specialized in managing support tickets. Our Zendesk integration combines all the advantages of in-app messaging with a powerful CRM back-end.</p>
+<h3 id='configuring-zendesk-ticketing'>Configuring Zendesk ticketing</h3>
+<p>Configuring Smooch to communicate with Zendesk is easy. Go to your app settings on the Smooch admin page, and in the Zendesk settings, enter your Zendesk subdomain and click on the authenticate button.</p>
+
+<p><img style="width:50%; min-width:400px; max-width:800px;" src="/images/zendesk_integration.png" alt="Configure Zendesk integration page"/></p>
+
+<p>In order to maintain all your interactions with an app user under a single Zendesk End-user profile, it&rsquo;s important to <a href="#user-data">set the email</a> of your user in your app&rsquo;s Smooch integration.</p>
+<h4 id='working-with-zendesk-email-signatures'>Working with Zendesk email signatures</h4>
+<p>Smooch automagically removes agent&rsquo;s personal signatures from messages. Global signatures can be set, but must be prefixed with <code class="prettyprint">--</code>, if they aren’t, you’ll see them appear in SK message bubbles, and it can be unsightly.
+<img style="width:50%; min-width:200px; max-width:400px;" src="/images/unsightly_signature.png" alt="Oops, how unsightly"/></p>
+<h4 id='optional-additional-information-on-configuration'>Optional additional information on Configuration</h4>
+<p>Once you are authenticated with your Zendesk app, Smooch will automatically configure targets and triggers so that your Zendesk agents can communicate with your Smooch app users.</p>
+
+<p>During the configuration process any existing triggers in your Zendesk settings will be modified to not email the End-user if the ticket is tagged &ldquo;smooch&rdquo;. We do this to avoid duplicating the conversation, and to remove any reason for the app user to leave your app to respond via email.</p>
+
+<p>It&rsquo;s suggested that you don&rsquo;t modify the targets and triggers that Smooch configures for you on Zendesk. However, if you do, and anything ever goes wrong, it&rsquo;s easy to fix. Just return to your app settings on the Smooch admin page and in the Zendesk settings click &ldquo;Remove Integration.&rdquo; Re-adding the integration will remove previously configured Smooch targets and triggers and refresh your configuration.</p>
+
+<p>Note: Smooch only ever configures one target and trigger per a Zendesk subdomain. In the event that multiple apps, or even mutliple Smooch accounts are authorized for a Zendesk subdomain, the triggers and targets will not be removed until all Smooch apps have had the Zendesk integration removed.</p>
+<h3 id='rate-limiting'>Rate Limiting</h3>
+<p>Zendesk limits each account to 200 requests per a minute (globally). Additionally, they only allow 15 comments to be made on each individual ticket (regardless of whether the comment is an agent or app user) within a 10 minute period.</p>
+
+<p>In the unlikely event that a conversation surpasses the rate limit, the agent will recieve a message in the Zendesk UI saying as much, and preventing the ticket from being updated for a certain period of time, usually around 6 minutes. Your app user&rsquo;s messages will be queued up and sent after the time period specified by Zendesk.</p>
+
+<p>To reduce the likelihood of you bumping up against the rate limit, Smooch batches together all messages sent from the app user within a 5 second period into a single comment.</p>
+
+          <h2 id='front'>Front</h2>
+<p><a href="https://frontapp.com/">Front</a> is a powerful multi-channel inbox management software that takes out the pain of team inboxes and enables you to scale your customer support, hiring, sales and more. This integration will allow Front to power your conversations with customers over messaging.</p>
+<h3 id='configuring-front-to-work-with-smooch'>Configuring Front to work with Smooch</h3>
+<p>The Front integration is built entirely on top of Smooch&rsquo;s public <a href="/rest">REST API</a>, which makes the integration steps different from other integrations like <a href="#slack">Slack</a> or <a href="#zendesk">Zendesk</a>. You can find the full installation instructions <a href="https://faq.frontapp.com/11682-adding-a-new-inbox-in-front/how-to-set-up-a-smooch-inbox-integration">here</a>.</p>
+
+          <h2 id='connecting-to-your-crm'>Connecting to your CRM</h2>
+<p>Smooch&rsquo;s been designed to fit into your existing workflow so you can focus on speaking to your users and take advantage of whatever medium makes you most effective.</p>
+
+<p>In addition to deep integration with <a href="#zendesk">Zendesk</a>, since Smooch uses e-mail to manage its communication, it&rsquo;s easy to use your favourite CRM to manage incoming conversations as tickets if you want to benefit from the additional tools this allows.</p>
+
+<ol>
+<li><p>Take note of the e-mail address that the CRM uses to receive new support requests.</p></li>
+<li><p>Set Smooch&rsquo;s forwarding address to the address you noted in step 1. </p></li>
+<li><p>Turn off any kind of signatures or annotations in your CRM to ensure that users receive a concise chat bubble when you reply.</p></li>
+</ol>
+
+          <h1 id='messaging-channels'>Messaging Channels</h1>
+          <h2 id='twilio'>Twilio</h2>
+<p><a href="https://www.twilio.com/">Twilio</a> is an SMS messaging service. Our Twilio integration allows your users to send you text messages at your Twilio number for your to receive in any of our channels like Slack, HipChat or Help Scout. Your replies are sent back as an SMS to the user.</p>
+<h3 id='configuring-twilio'>Configuring Twilio</h3>
+<p>You&rsquo;ll need a Twilio account with a phone number configured on it. A trial account is ok to test but is only good to send SMS to the phone you used while signing up. Once you&rsquo;ve set up your Twilio account, obtain your API credentials from the Twilio account settings page and enter them into the corresponding Smooch page.</p>
+
+<p><img alt="Enter API credentials" src="../images/twilio.png" /></p>
+
+<p>Once your Twilio account is authenticated, select the phone number you want to use and hit save. You should now be able to receive messages from your Twilio phone number and reply via any of your configured channels.</p>
+
+          <h3 id='action-buttons'>Action Buttons</h3>
+<p>Action buttons with the type of <code class="prettyprint">link</code> will be translated into text. For example, if you link to <code class="prettyprint">https://google.ca</code> with the text of the button as <code class="prettyprint">Click Here</code>, and the text of the message as <code class="prettyprint">This is a very special link</code>, the text message will look like:</p>
+<pre class="highlight plaintext"><code>This is a very special link
+
+Click Here https://google.ca
+</code></pre>
+<h3 id='reply-and-postback-buttons'>Reply and Postback Buttons</h3>
+<p>Reply buttons and Postback buttons will be rendered as text suggestions, instead of as buttons. So a message like this:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+%[Star Trek](reply:STAR_TREK)
+%[Star Wars](reply:STAR_WARS)
+</code></pre>
+
+<p>will look like:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+You can say: STAR TREK, STAR WARS
+</code></pre>
+
+<p>Smooch will then do string matching on the user&rsquo;s reply to determine if they have selected one of the options, and take the appropriate action. For example, a user response of <code class="prettyprint">STAR TREK</code> or <code class="prettyprint">star trek</code>, will cause the payload <code class="prettyprint">STAR_TREK</code> to be attached to the message.</p>
+<h3 id='buy-buttons'>Buy Buttons</h3>
+<p>Buy buttons will be rendered as hyperlinks and redirect users to a web page where they can enter payment information.</p>
+
+          <h2 id='line'>LINE</h2>
+<p>LINE is a Japan based rapidly growing mobile messaging app that offers free voice and video calls, messages, and a limitless variety of stickers. With over 600 million users worldwide, LINE&rsquo;s expanding platform is a great way to stay in touch with your customers.</p>
+
+<p>Our LINE integration allows your users to send messages to your LINE bot which you receive in channels like Slack, HipChat or Help Scout. Your replies are sent back as coming from your LINE bot.</p>
+
+<p>You can also receive the user messages through a <a href="/rest#webhooks">webhook</a>.</p>
+<h3 id='creating-a-line-bot'>Creating a LINE bot</h3>
+<p>To create a bot you first need to create a LINE account through a <a href="http://line.me/en-US/download">mobile app</a>.</p>
+
+<p>After having signed up with your phone number, you will need to activate email registration and create a LINE business account.</p>
+
+<ol>
+<li><p>Go in the settings (see screenshot below) &gt; account and click on &ldquo;Email registration&rdquo;. Enter your email address and password and click &ldquo;Register&rdquo;. LINE will send you an email to confirm your registration. <span class="half-width-img"><img alt="Line settings" src="../images/line_settings.png" /></span></p></li>
+<li><p>Login to the <a href="https://business.line.me">LINE business section</a> with the credentials entered previously. You&rsquo;ll need your phone to login.</p></li>
+<li><p>Enter your account details, and confirm the registration by email.</p></li>
+<li><p>Enter information about your business to complete the LINE business account registration.</p></li>
+<li><p>Click &ldquo;Create a Business Account&rdquo;, and enter your account name.</p></li>
+<li><p>On the next screen, click the &ldquo;Start&rdquo; button to the right of &ldquo;BOT API Trial Account&rdquo;. Scroll down and click the blue &ldquo;Start&rdquo; button.</p></li>
+<li><p>Agree to the terms and click &ldquo;create&rdquo; to create your bot.</p></li>
+</ol>
+
+<p>You can now edit information about your bot such as the name and avatar by clicking &ldquo;EDIT&rdquo;. You&rsquo;re also ready to configure your LINE bot with Smooch.</p>
+<h3 id='configuring-line'>Configuring LINE</h3>
+<p>Once you&rsquo;ve configured your bot, login to the Smooch dashboard and select LINE in the list of integrations and follow these steps.</p>
+
+<ol>
+<li><p>Enter your Channel ID, Channel Secret and MID on the integration page.</p></li>
+<li><p>Copy the callback url displayed on the page. In the bot settings click on &ldquo;EDIT&rdquo; at the bottom of your bot settings in LINE, paste the provided Callback URL and click &ldquo;SAVE&rdquo;.</p></li>
+<li><p>In the Smooch dashboard, click &ldquo;Connect your LINE bot&rdquo; to complete the integration.</p></li>
+</ol>
+
+<p>You can now add your bot to your list of friends by scanning the QR code displayed in the LINE bot settings, and talk directly to it. All messages should be sent to any backend channel you&rsquo;ve configured.</p>
+
+          <h3 id='action-buttons'>Action Buttons</h3>
+<p>Action buttons with the type of <code class="prettyprint">link</code> will be translated into text. For example, if you link to <code class="prettyprint">https://google.ca</code> with the text of the button as <code class="prettyprint">Click Here</code>, and the text of the message as <code class="prettyprint">This is a very special link</code>, the text message will look like:</p>
+<pre class="highlight plaintext"><code>This is a very special link
+
+Click Here https://google.ca
+</code></pre>
+<h3 id='reply-and-postback-buttons'>Reply and Postback Buttons</h3>
+<p>Reply buttons and Postback buttons will be rendered as text suggestions, instead of as buttons. So a message like this:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+%[Star Trek](reply:STAR_TREK)
+%[Star Wars](reply:STAR_WARS)
+</code></pre>
+
+<p>will look like:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+You can say: STAR TREK, STAR WARS
+</code></pre>
+
+<p>Smooch will then do string matching on the user&rsquo;s reply to determine if they have selected one of the options, and take the appropriate action. For example, a user response of <code class="prettyprint">STAR TREK</code> or <code class="prettyprint">star trek</code>, will cause the payload <code class="prettyprint">STAR_TREK</code> to be attached to the message.</p>
+<h3 id='buy-buttons'>Buy Buttons</h3>
+<p>Buy buttons will be rendered as hyperlinks and redirect users to a web page where they can enter payment information.</p>
+
+          <h2 id='facebook-messenger'>Facebook Messenger</h2>
+<p>Our Facebook Messenger integration allows your users to send you Facebook messages through your Facebook Page which you receive in any of our channels like Slack, HipChat or Help Scout. Your replies are sent back as a Facebook message to the user.</p>
+<h3 id='configuring-facebook-messenger'>Configuring Facebook Messenger</h3>
+<p>To use the Facebook Messenger integration, you need a Facebook account with permissions to manage a published Facebook page. You then need to visit the Facebook Messenger integration page and press on &ldquo;Connect your Facebook account&rdquo;. This will redirect you to Facebook where you will need to allow Smooch to access your account information.</p>
+
+<p>Once your Facebook account is connected to Smooch, select the Facebook page you want to use and hit save. You should now be able to receive messages from your Facebook page and reply via any of your configured channels.</p>
+
+<p><img alt="Facebook Messenger Integration Page Settings" src="../images/messenger_settings.png" /></p>
+<h3 id='action-buttons'>Action Buttons</h3>
+<p>Action buttons work as expected. A <code class="prettyprint">link</code> action button will bring the user to the specified URL while a <code class="prettyprint">postback</code> action button will trigger any <a href="/rest#webhooks">webhook</a> listening to the <code class="prettyprint">postback</code> trigger.</p>
+
+<p>Because of new <a href="https://developers.facebook.com/policy/#messengerplatform">Facebook terms of service</a>, payment requests (action buttons of type <code class="prettyprint">buy</code>) cannot currently be sent to Messenger.</p>
+<h3 id='persistent-menu'>Persistent Menu</h3>
+<p><img alt="Facebook Messenger Persistent Menu" src="../images/messenger_menu.png" /></p>
+
+<p>It&rsquo;s possible to configure a menu of 1-5 buttons on the Messenger UI by calling <a href="/rest#persistent-menus">the Smooch REST API</a>. Menus are configured per app, not per user. Menu items can be <a href="#links">link</a> or <a href="#postbacks">postback</a> type actions.</p>
+
+          <h2 id='telegram'>Telegram</h2>
+<p>Our Telegram integration allows your users to send you messages through a <a href="https://core.telegram.org/bots">Telegram bot</a>. You can receive the messages in any of our channels like Slack, HipChat or Help Scout, and your replies are sent back as Telegram messages from the bot to the user.</p>
+
+<p><aside class="notice">
+Make sure to <a href="https://web.telegram.org/#/login">log in to Telegram</a> before continuing the steps below.
+</aside></p>
+<h3 id='creating-a-bot'>Creating a Bot</h3>
+<p>To <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">create a bot</a>, follow the instructions <a href="https://core.telegram.org/bots#botfather">here</a>.</p>
+
+<p><img alt="Create a bot with BotFather" src="../images/botfather_create_bot.png" /></p>
+
+<p>After choosing the bot&rsquo;s username, BotFather will generate an access token for the API, which Smooch will need to integrate with Telegram.</p>
+<h3 id='configuring-telegram'>Configuring Telegram</h3>
+<p><img alt="Telegram Integration Page Settings" src="../images/telegram_not_integrated.png" /></p>
+
+<p>Once you have created the bot, all you have to do is enter the bot&rsquo;s access token in the <a href="https://app.smooch.io">Smooch dashboard</a> and click on &ldquo;Authenticate your Telegram Bot&rdquo;. Your bot should now relay any message it receives to your backend channel.</p>
+<h3 id='conversations-through-the-bot'>Conversations Through the Bot</h3>
+<p>To send a user to the bot, Telegram users have to search for the username of your bot (obtained while creating a bot with BotFather). Once they have added your bot to their contacts, your bot will act as any other Telegram user. Any user will be able to send normal text messages to your bot or any of the supported file formats (documents, images, sound). If the user sends a file, the message will contain a link to the file that was sent.</p>
+
+<p><aside class="notice">
+Bots cannot retrieve files bigger than 20MB. If a user attempts to send a file bigger than the limit, you will receive an alert.
+</aside></p>
+
+<p>When you reply from any of the configured backend channels, Telegram users will receive the message as though it was coming from the bot.</p>
+<h3 id='action-buttons'>Action Buttons</h3>
+<p>When used with Telegram, action buttons work as expected. When a button with type of <code class="prettyprint">link</code> will bring the user to a web page, while postback buttons will trigger any Smooch webhook listening to the <code class="prettyprint">postback</code> trigger.</p>
+
+<p>Payment requests with the <a href="#stripe">Stripe integration</a> will turn into link buttons which bring the user to a checkout page where payment information can be entered.</p>
+
+          <h2 id='email-messaging'>Email Messaging</h2>
+<p>The Email channel allows you to have conversations with your users by email via any of your connected business systems, be it Slack, Front or a bot connected to the Smooch API.</p>
+
+<p>When you enable the Email channel, you will be provided with a Smooch email address. Emails sent to that address will be delivered to your connected business systems.</p>
+<h3 id='using-your-own-email-address'>Using your own email address</h3>
+<p>After you set up your <em>from</em> address, all your messages to users will appear to come from your own email address instead of your Smooch email address.</p>
+
+<ol>
+<li><p>To use your own email address to receive and respond to user emails, simply provide your email address in the &ldquo;from address&rdquo; field on the Smooch Email Channel page. <img alt="input from address" src="../images/input_forwarding_email.png" /></p></li>
+<li><p>Configure your email provider to automatically forward incoming email to your Smooch email address (detailed instructions below).</p></li>
+<li><p>Now click the <em><strong>Test email forwarding</strong></em> link on the Email channel page (shown below) to confirm that forwarding is working.</p></li>
+</ol>
+
+<p><img alt="test email forwarding" src="../images/test_forwarding_email.png" /></p>
+<h4 id='configuring-your-email-provider-to-forward-email-to-your-smooch-email-address'>Configuring your email provider to forward email to your Smooch email address</h4>
+<p>During configuration, your provider may send a confirmation email to your Smooch email address. It&rsquo;s important to have at least one business system set up on Smooch so that you can act on the confirmation email sent by your provider. For example, if you setup Gmail to forward to Smooch, you&rsquo;ll receive a message in your business system from the Gmail team, asking you to follow a link to confirm forwarding to your Smooch address.</p>
+<h5 id='provider-specific-instructions'>Provider specific instructions</h5>
+<p>Below are links to tutorials detailing how to set up automatic email forwarding for a variety of email providers. If you think we&rsquo;re missing a provider feel free to get in touch with us! <a href="mailto:help@smooch.io">help@smooch.io</a></p>
+
+<ul>
+<li><p><a href="https://support.google.com/mail/answer/10957">Google Apps and Gmail</a></p></li>
+<li><p>Google Groups</p>
+
+<ul>
+<li>1. <a href="https://support.google.com/a/answer/33343">Create a group</a></li>
+<li>2. <a href="https://support.google.com/groups/answer/2465464">Add your smooch email address as a member of the group</a></li>
+</ul></li>
+<li><p><a href="https://technet.microsoft.com/en-us/library/dd351134.aspx">Microsoft Exchange</a></p></li>
+<li><p><a href="https://technet.microsoft.com/en-us/magazine/dd547068.aspx">Microsoft Exchange 2007</a></p></li>
+<li><p><a href="https://help.yahoo.com/kb/SLN17371.html">Yahoo</a></p></li>
+<li><p><a href="https://my.bluehost.com/cgi/help/forwarders">Bluehost</a></p></li>
+<li><p><a href="http://wiki.dreamhost.com/Email_Setup">Dreamhost</a></p></li>
+<li><p><a href="http://www.fatcow.com/knowledgebase/read_article.bml?kbid=5745">FatCow</a></p></li>
+<li><p><a href="https://support.rackspace.com/how-to/set-up-email-forwarding-on-cloud-sites/">Rackspace</a></p></li>
+<li><p><a href="https://forum.web.com/register/faq/">Register.com</a></p></li>
+<li><p><a href="http://help.ovh.co.uk/CreateEmailRedirection">OVH</a></p></li>
+<li><p><a href="https://documentation.mailgun.com/api-routes.html#actions">Mailgun</a></p></li>
+</ul>
+<h3 id='sending-and-receiving-files'>Sending and receiving files</h3>
+<p>Email attachments sent by the user will either be rendered in your business system, if they are images, or posted as hyperlinks, for other types of files.</p>
+
+<p>Images sent to the user will be embedded in the email as html images.</p>
+<h3 id='whispers'>Whispers</h3>
+<p>Whispers sent to email will contain a footer with an unsubscribe link. Like so:</p>
+
+<p><img src="/images/email_unsubscribe.png" alt="unsubscribe" style="max-width:520px;"></p>
+
+<p>If the user clicks on this link, they will be permanently unsubscribed from further whispers, though they will still be able to receive non-whisper messages.</p>
+
+          <h3 id='action-buttons'>Action Buttons</h3>
+<p>Action buttons with the type of <code class="prettyprint">link</code> will be translated into text. For example, if you link to <code class="prettyprint">https://google.ca</code> with the text of the button as <code class="prettyprint">Click Here</code>, and the text of the message as <code class="prettyprint">This is a very special link</code>, the text message will look like:</p>
+<pre class="highlight plaintext"><code>This is a very special link
+
+Click Here https://google.ca
+</code></pre>
+<h3 id='reply-and-postback-buttons'>Reply and Postback Buttons</h3>
+<p>Reply buttons and Postback buttons will be rendered as text suggestions, instead of as buttons. So a message like this:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+%[Star Trek](reply:STAR_TREK)
+%[Star Wars](reply:STAR_WARS)
+</code></pre>
+
+<p>will look like:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+You can say: STAR TREK, STAR WARS
+</code></pre>
+
+<p>Smooch will then do string matching on the user&rsquo;s reply to determine if they have selected one of the options, and take the appropriate action. For example, a user response of <code class="prettyprint">STAR TREK</code> or <code class="prettyprint">star trek</code>, will cause the payload <code class="prettyprint">STAR_TREK</code> to be attached to the message.</p>
+<h3 id='buy-buttons'>Buy Buttons</h3>
+<p>Buy buttons will be rendered as hyperlinks and redirect users to a web page where they can enter payment information.</p>
+
+          <h2 id='wechat'>WeChat</h2>
+<p>WeChat is a China-based mobile text and voice messaging communication service. With over 700 million active users, it’s become the de facto hub for Chinese conversational commerce.</p>
+
+<p>Our WeChat integration lets your customers message you from WeChat, while you reply using your favorite business apps.</p>
+<h3 id='configuring-wechat'>Configuring WeChat</h3>
+<p>In order to configure WeChat, you&rsquo;ll need a WeChat Official Account. You can apply for one <a href="http://apply.wechat.com">here</a>.</p>
+
+<p>Once you&rsquo;ve created your account, you will need to go through the account verification process. In order to do so, login to your <a href="https://mp.weixin.qq.com">WeChat dashboard</a> and go to the “WeChat Certification | 微信认证” page below the Set Up section.</p>
+
+<p>Once your account has been verified, login to the <a href="https://app.smooch.io">Smooch dashboard</a> and select WeChat in the list of integrations and follow these steps.</p>
+
+<ol>
+<li><p>In the WeChat dashboard, go to the “Basic Configuration | 基本配置” page below the Develop section and enter your App ID and App Secret on the Smooch integration page.</p></li>
+<li><p>In the WeChat dashboard, click on “Modify Configuration | 修改配置” below Basic Configuration, then copy the Webhook URL and Token from the Smooch integration page and paste it there.</p></li>
+<li><p>After saving your settings, click on Connect to WeChat to complete the integration.</p></li>
+</ol>
+<h3 id='safe-mode'>Safe Mode</h3>
+<p>Optionally, you can configure &ldquo;Safe Mode&rdquo; in the WeChat dashboard. With this mode enabled, all outgoing messages from WeChat will be encrypted using a secure 43 character AES key.</p>
+
+<p>In order to have Safe Mode functioning correctly with Smooch, simply copy your EncodingAESKey from WeChat and paste it in the WeChat integration page. Messages will be automatically decrypted in a secure fashion.</p>
+<h3 id='persistent-menu'>Persistent Menu</h3>
+<p><img alt="WeChat Persistent Menu" src="../images/wechat_menu.png" /></p>
+
+<p>It&rsquo;s possible to configure a menu of 1-5 buttons on the WeChat UI by calling <a href="/rest#persistent-menus">the Smooch REST API</a>. Menus are configured per app, not per user. Menu items can be <a href="#links">link</a> or <a href="#postbacks">postback</a> type actions.</p>
+
+          <h3 id='action-buttons'>Action Buttons</h3>
+<p>Action buttons with the type of <code class="prettyprint">link</code> will be translated into text. For example, if you link to <code class="prettyprint">https://google.ca</code> with the text of the button as <code class="prettyprint">Click Here</code>, and the text of the message as <code class="prettyprint">This is a very special link</code>, the text message will look like:</p>
+<pre class="highlight plaintext"><code>This is a very special link
+
+Click Here https://google.ca
+</code></pre>
+<h3 id='reply-and-postback-buttons'>Reply and Postback Buttons</h3>
+<p>Reply buttons and Postback buttons will be rendered as text suggestions, instead of as buttons. So a message like this:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+%[Star Trek](reply:STAR_TREK)
+%[Star Wars](reply:STAR_WARS)
+</code></pre>
+
+<p>will look like:</p>
+<pre class="highlight plaintext"><code>Which do you prefer?
+You can say: STAR TREK, STAR WARS
+</code></pre>
+
+<p>Smooch will then do string matching on the user&rsquo;s reply to determine if they have selected one of the options, and take the appropriate action. For example, a user response of <code class="prettyprint">STAR TREK</code> or <code class="prettyprint">star trek</code>, will cause the payload <code class="prettyprint">STAR_TREK</code> to be attached to the message.</p>
+<h3 id='buy-buttons'>Buy Buttons</h3>
+<p>Buy buttons will be rendered as hyperlinks and redirect users to a web page where they can enter payment information.</p>
+
+          <h2 id='shopify'>Shopify</h2>
+<p><a href="https://www.shopify.com/">Shopify</a> is a simple way to set up an online store to organize products, accept credit card payments, and manage orders.</p>
+
+<p>This integration adds the Smooch web plugin to your Shopify online store. Smooch will set your <code class="prettyprint">appToken</code> and add the code snippet in your theme.</p>
+<h3 id='adding-smooch-to-your-store'>Adding Smooch to your store</h3>
+<p>In order to append the plugin to your theme, all you need to do is to press on <em>Authenticate</em> from the integration page or install Smooch from the <a href="https://apps.shopify.com/smooch">Shopify marketplace</a>.</p>
+
+<p><img alt="From the integration page" src="../images/shopify.png" /></p>
+
+<p><aside class="notice">Integrating Smooch will modify your current Shopify theme. If your theme ever changes, you will need to re-enable this integration.</aside></p>
+<h3 id='adding-more-customer-informations'>Adding more customer informations</h3>
+<p>If available, Smooch already includes the <code class="prettyprint">givenName</code>, <code class="prettyprint">surname</code>, <code class="prettyprint">email</code>, <em>order count</em>, <em>last order placed</em>, <em>lifetime spent</em> and the Admin url of the current <code class="prettyprint">customer</code>. It is also possible to retrieve more information for Shopify&rsquo;s <a href="https://docs.shopify.com/themes/liquid-documentation/objects/customer"><code class="prettyprint">customer</code> object</a> (it could also be <code class="prettyprint">orders</code>, <code class="prettyprint">address</code> or any object available in <a href="https://docs.shopify.com/themes/liquid-documentation/objects">your theme</a>). To do so, you need to <code class="prettyprint">Edit HTML/CSS</code> of your current theme to update the <code class="prettyprint">snippets/smooch.liquid</code> file and add them into <code class="prettyprint">properties</code> of the <code class="prettyprint">Smooch.updateUser</code> call.</p>
+<pre class="highlight plaintext"><code>Smooch.updateUser({
+  givenName: "{{ customer.first_name }}",
+  surname: "{{ customer.last_name }}",
+  email: "{{ customer.email }}",
+  properties: {
+    "Customer Account": "{{ shop.secure_url }}/admin/customers/{{ customer.id }}",
+    ...
+    "Location": "{{ customer.default_address.city }}, {{ customer.default_address.country_code }}",
+    "Cart Items": "{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})"
+  }
+});
+</code></pre>
+
+          <h2 id='elev-io'>Elev.io</h2>
+<p><a href="https://elev.io">Elev.io</a> delivers rich onsite help to customers. To enable Smooch inside elev.io, follow the guide below:</p>
+<h3 id='1--log-in-to-elev-io-and-add-smooch39s-modules'>1. Log in to elev.io and add Smooch&rsquo;s modules</h3>
+<p>After connecting to your elev.io dashboard, click on the menu &ldquo;modules&rdquo;. Under the card named &ldquo;Chat&rdquo;, click on &ldquo;Install&rdquo;.</p>
+
+<p><img alt="Elev.io Dashboard" src="../images/elevio_dashboard.png" /></p>
+
+<p>Among the live chat solutions available on elev.io, choose Smooch.</p>
+
+<p><img style="width:75%; min-width:400px; max-width:800px;" src="../images/elevio_chat.png" alt="Elev.io Chat"></p>
+<h3 id='2--connect-to-smooch'>2. Connect to Smooch</h3>
+<p>Paste your Smooch app token in the appropriate text field.</p>
+
+<p><img style="width:75%; min-width:400px; max-width:800px;" src="../images/elevio_token.png" alt="Elev.io Token"></p>
+<h3 id='3--configure-the-widget'>3. Configure the widget</h3>
+<p>Finally, configure the text displayed on the widget and add the module to elev.io.</p>
+
+<p><img style="width:75%; min-width:400px; max-width:800px;" src="../images/elevio_config.png" alt="Elev.io Config"></p>
+
+          <h1 id='add-ons'>Add-ons</h1>
+          <h2 id='stripe'>Stripe</h2>
+<p>Stripe is a developer-friendly platform that instantly enables businesses to accept and manage payments online and in mobile apps. Our Stripe integration allows you to request payment from your users directly within the conversation.
+Credit card informations are never seen by our servers, everything related to transactions is all handled by Stripe.</p>
+
+          <div class="third-width-img">
+    <img alt="in conversation money request" src="../images/stripe_android_request.png" />
+    <img alt="card capture ui" src="../images/stripe_android_card_input.png" />
+    <img alt="payment completed ui" src="../images/stripe_android_completed.png" />
+</div>
+
+          <h3 id='saved-credit-cards'>Saved Credit Cards</h3>
+<p>We will automatically save credit cards for users who are JWT protected.</p>
+
+<p>On subsequent purchases, they will be presented a dialog allowing them to buy without having to re-enter their card.</p>
+
+          <div class="third-width-img" style="text-align:center">
+    <img alt="in conversation saved card money request" src="../images/stripe_saved_android_request.png" />
+    <img alt="saved card ui" src="../images/stripe_saved_android_card.png" />
+</div>
+
+          <h3 id='transaction-fees'>Transaction fees</h3>
+<p>Smooch takes a 0.5% + 20¢ fee on every payment we facilitate. This is separate from the <a href="https://stripe.com/ca/pricing">Stripe fees</a> which are currently at 2.9% + 30¢. For example, on a $100 USD payment, Smooch will receive $0.70 USD and Stripe $3.20 USD.</p>
+<h3 id='configuring-stripe'>Configuring Stripe</h3>
+<p>From the Stripe integration page, select which Stripe mode you want Smooch to be using. </p>
+
+<p><img alt="Stripe integration page ui" src="../images/Stripe_integration_page_ui.png" /></p>
+
+<p>Use Test mode during development. While in this mode you can use Stripe&rsquo;s <a href="https://stripe.com/docs/testing#cards">test credit card numbers</a> to make transactions without using real money. Use Live mode to get real money 💸.</p>
+
+<p>Then Click &ldquo;Authenticate your Stripe account&rdquo;. This will send you to a Stripe page where you can select which Stripe account to link Smooch with. </p>
+
+<p><aside class="info">
+If you are using test mode, notice the &ldquo;Skip this account form&rdquo; at the top of the Stripe page. There is no need for a bank account in test mode.
+</aside></p>
+<h3 id='requesting-payments'>Requesting payments</h3>
+<p>While inside a conversation with a user you can send a buy button with the following syntax</p>
+<pre class="highlight plaintext"><code>$[Button label here](25.00)
+</code></pre>
+
+<p>This works from any channel you configured to use with Smooch.</p>
+
+<p>The amount you specify can be just a dollars amount or dollars and cents as in the example. Note that all amounts are in USD.</p>
+
+<p>Once the user completes a payment you&rsquo;ll get a confirmation along with a link to the payment page on Stripe.</p>
+
+          <p><aside class="notice">
+If your users are messaging you via our <a href="#twilio">Twilio</a>, <a href="#facebook-messenger">Messenger</a>, <a href="#email-channel">Email</a> or <a href="#telegram">Telegram</a> integrations, they&rsquo;ll get a web link instead of a buy button. It will take them to a payment web page where we use <a href="https://stripe.com/docs/checkout">Checkout.js</a> from Stripe to secure the payment. This mechanism is also used for Smooch Android SDK versions older than 2.1.
+</aside></p>
+
+<p><span class="third-width-img"><img alt="Stripe hosted checkout" src="../images/stripe_hosted_checkout.png" /></span></p>
+
+          <h2 id='office-hours'>Office Hours</h2>
+<p>Office Hours is an add-on built by Smooch which lets you send an automatic reply to customers who message your team outside of your preferred work hours.</p>
+
+<p>This integration works with all messaging channel integrations.</p>
+
+          <p><span class="half-width-img"><img alt="Office Hours in Android" src="../images/office_hours_android.png" /></span></p>
+
+          <h3 id='adding-office-hours-to-your-messaging-channels'>Adding Office Hours to your messaging channels</h3>
+<p>To enable the Office Hours add-on, you will need to select your preferred time zone, add your office hours, and write your away message.</p>
+
+<p>By default, the Smooch dashboard is going to try to guess your current time zone. This time zone is going to be used for your users&#39; messages and your office hours in order to dispatch the message at the right moment.</p>
+
+<p>You will need to also provide the work hours during which you will be available to reply. You can set different time ranges on different days or set it to all day by selecting the 12:00 AM to 11:59 PM range.</p>
+
+<p>The away message will only be dispatched when the user messages you outside of your work hours. This will give you the opportunity to tell your customer to come back later or message you through another channel.</p>
+
+<p>The Office Hours add-on can also be set to reply to specific messaging channels if needed. If you select <code class="prettyprint">iOS</code> and not <code class="prettyprint">Web</code> for example, a user sending a message from an iOS device will prompt the away message, but a user on Web will not.</p>
+
+<p><aside class="notice">There are a few exceptions that will prevent the message from being dispatched: if it&rsquo;s already been dispatched on that day, within the last 12 hours, or if you&rsquo;ve messaged the user in the last 15 minutes.</aside></p>
+
+          <h1 id='whispers'>Whispers</h1>
+<p>Smooch allows you to reach out to your users at scale so that you can start conversations with them about anything that matters to your app, even if they aren&rsquo;t in need of service or support. We call this feature &ldquo;Whispers&rdquo; and it allows you to automatically send a message to a targeted group of users at exactly the right time.</p>
+
+<p>To help get you started, we&rsquo;ve built in 5 basic templates and also allow you to create your own using any custom metadata that you&rsquo;re capturing with the <code class="prettyprint">Smooch User</code> API.</p>
+
+<ul>
+<li><p><em>Welcome Whisper</em> : Welcome new users to your app by starting a conversation where you can answer pressing questions and get initial feedback.</p></li>
+<li><p><em>Re-Engage Users</em> : Send a message to users who were last seen using the app at least 7 days ago.</p></li>
+<li><p><em>Announcement</em> : Send a message to all users when they launch the app.</p></li>
+<li><p><em>Ask for app rating</em> : Send a message to all users who have signed up at least 5 days ago, prompting them to rate your app in the app store.</p></li>
+<li><p><em>Auto-response</em> : Inform users of when to expect an answer, when they send their first message.</p></li>
+</ul>
+
+<p>You can start from any of these templates and customize it to meet your needs. You can also create a custom Whisper from scratch and go beyond these templates. You can use Whispers to ask for reviews from your most engaged users at the right time, you can notify users of older versions of your app about new versions, and more.</p>
+<h2 id='how-whispers-work'>How Whispers work</h2>
+<p>You create Whispers from within the <a href="https://app.smooch.io">Smooch dashboard</a> by specifying which users should receive your message, the message you&rsquo;d like to send to your users and the event that should trigger delivery of this message. For example, to create a Whisper that would check in to see how users are doing 2 days after installing an app, you&rsquo;d create a custom Whisper with these settings:</p>
+
+<p><img alt="Whisper creation form" src="../images/create_whisper.png" /></p>
+<h3 id='targeting-a-group-of-users'>Targeting a group of users</h3>
+<p>You can target your users based on any information that you&rsquo;ve stored using the <code class="prettyprint">Smooch User</code> API. We also provide several built-in properties that you can use without instrumenting your app with calls to <code class="prettyprint">Smooch User</code> class.</p>
+
+<ul>
+<li><p><em>All users</em> : Send the Whisper to <em>everyone</em> that has your app. Whispers that target everyone must be <a href="#when-are-whispers-sent">linked to an event</a>.</p></li>
+<li><p><em>Signed Up</em> : Send the message before/after a specified number of days. For example, you can use this to send a message to all users who&rsquo;ve been using your app for less than a day or more than a week. See <a href="#setting-the-signed-up-date">here</a> for more information.</p></li>
+<li><p><em>Last Seen</em> : Send the message based on when the user last interacted with your app. This value is updated automatically each time a user launches your app.</p></li>
+<li><p><em>App Version</em> : Send the message to users who are using (or not using) a specific version of your app. The value for this property is taken from the CFBundleShortVersionString key in your app&rsquo;s info.plist file, and is updated each time the user launches your app.</p></li>
+</ul>
+
+<p>In order to create Whispers based on properties you&rsquo;ve defined using the <code class="prettyprint">Smooch User</code> class, you&rsquo;ll need to run your app and ensure that at least 1 of your users was tagged with the property you want to base your Whisper on. Alternatively, you can make a HTTP request to the <code class="prettyprint">PUT /appusers</code> route of the <a href="/rest">Smooch REST API</a>. For more information on using custom properties, read our <a href="#user-data">documentation on the subject</a>.</p>
+
+<p>It&rsquo;s possible to add multiple conditions to a Whisper, allowing you to filter out users based on their properties. In the example below, you can see a Whisper that will be sent only if the platform of the user is iOS and if the user has signed up less than 7 days ago:</p>
+
+<p><img alt="Whisper with conditions" src="../images/whisper_conditions.png" /></p>
+<h3 id='personalizing-the-message-text'>Personalizing the message text</h3>
+<p>You can personalize the message that&rsquo;s being sent with the first or last name of the user. To do this, simply use the syntax <code class="prettyprint">{{ firstName || fallback }}</code> when creating your message. If the user&rsquo;s firstName hasn&rsquo;t been set by your code through the <code class="prettyprint">Smooch User</code> class then the placeholder will be replaced with the string specified as <code class="prettyprint">fallback</code>.</p>
+
+          <h2 id='when-are-whispers-sent'>When are Whispers sent</h2>
+<p>Whispers can be sent either when a specified event occurs in your app or when a user&rsquo;s profile information matches the criteria of the target group.</p>
+
+<p>Whispers that are based on custom events defined by you in your app are tied to the execution of the Smooch <code class="prettyprint">track:</code> method. When <code class="prettyprint">track:</code> is called, Smooch will check to see if the associated Whisper has already been seen by this user. If it hasn&rsquo;t, the Whisper will be immediately presented to the user through an in-app notification that leads to the messaging interface when tapped. When you create a Whisper, Smooch will display a preview of this in-app notification.</p>
+<pre class="highlight java"><code><span class="n">Smooch</span><span class="o">.</span><span class="na">track</span><span class="o">(</span><span class="s">"item-in-cart"</span><span class="o">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">Smooch</span><span class="p">.</span><span class="nx">track</span><span class="p">(</span><span class="s1">'item-in-cart'</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight objective_c"><code><span class="p">[</span><span class="n">Smooch</span> <span class="nf">track</span><span class="p">:</span><span class="s">@"user-on-promopage"</span><span class="p">];</span>
+</code></pre>
+<pre class="highlight swift"><code><span class="kt">Smooch</span><span class="o">.</span><span class="nf">track</span><span class="p">(</span><span class="s">"user-on-promopage"</span><span class="p">);</span>
+</code></pre>
+
+<p>If the Whisper is not tied to an event, Smooch will monitor your userbase for changes and dispatch Whispers when a user&rsquo;s properties make them a fit for the target group of your Whisper. In many cases, this occurs when the user is not using your app. For instance, if you elect to send a Whisper to new users after 1 day has elapsed, Smooch will deliver the message approximately 24 hours after the user first used your app. If you choose to use this powerful method of Whisper delivery, ensure that you&rsquo;ve enabled push notifications for your app in Smooch. With push enabled, your users will receive a message that will bring them back into the conversation, even if they&rsquo;re not using your app.</p>
+
+<p>Note that users need to be prompted and accept to receive push notifications. To make sure we don&rsquo;t prompt the user at a bad moment, Smooch will only request permission to send push notifications after a user sends his first message and only if the prompt wasn&rsquo;t shown earlier by your app. To get the full power of Whispers, we recommend you prompt for push permission as early as possible.</p>
+
+          <h2 id='adding-user-actions-to-a-whisper'>Adding user actions to a Whisper</h2>
+<p>You can prompt your users to take actions by adding action buttons to your Whisper. Clicking on &lsquo;Add an action&rsquo; will open up a new input box where you can specify the button text and what action to take when the user clicks on the button.</p>
+
+<p><img alt="Whisper add action" src="../images/whisper_action.png" /></p>
+
+<p>For more information on whisper actions, see <a href="#sending-action-buttons">this section</a> of the docs.</p>
+
+          <h2 id='managing-whispers'>Managing Whispers</h2>
+<p><img alt="Manage Whispers" src="../images/whisper_manage.png" /></p>
+
+<p>Once you&rsquo;ve created a Whisper you can manage it from within the Smooch web interface. By clicking on the &ldquo;Whispers&rdquo; link in the navigation bar, you&rsquo;ll be presented with a list of Whispers as well as the number of users who have been exposed to them while running your app.</p>
+
+<p>You can pause Whispers at any time. When you do so, the Whisper will not be shown to any more users until you mark it as active by clicking &ldquo;Resume&rdquo;.</p>
+
+          <h1 id='localization'>Localization</h1>
+<p>Every string you see in Smooch can be <a href="#strings-customization">customized</a> and localized. Smooch provides a few languages out of the box, but <a href="#adding-more-languages">adding new languages</a> is easy to do. When localizing strings, Smooch looks for values in the strings.xml in your app first then in the Smooch ui bundle, enabling you to customize any strings and add support for other languages.</p>
+<h2 id='adding-more-languages'>Adding more languages</h2>
+<p>To enable other languages beside the provided ones, first copy the english strings.xml file from the Smooch ui bundle to the corresponding values folder for that language. Then, translate the values to match that language.</p>
+
+<p>If you translate Smooch&rsquo;s strings to a language not currently supported, we encourage you to share it with us so that every Smooch user can benefit from it. You can do so by <a href="https://github.com/smooch/smooch-android/fork">forking</a> our GitHub repo and creating a pull request, or just send us your string file at <a href="mailto:help@smooch.io">help@smooch.io</a></p>
+
+          <h1 id='customization'>Customization</h1><h2 id='strings-customization'>Strings customization</h2>
+<p>Smooch lets you customize any strings it displays by overwriting its keys. 
+In order to do so, simply add <code class="prettyprint">res/values-&lt;your-language-code&gt;/strings.xml</code> file in your Android project and specify new values for the keys used in Smooch. You can find all available keys by browsing to the <code class="prettyprint">ui-x.x.x/res/values/values.xml</code> file in the External Libraries in Android Studio.</p>
+
+<p>Dates shown in the conversation view are already localized to the user&rsquo;s device.</p>
+
+<p>For example, if you wanted to override strings for English, you would create a file <code class="prettyprint">res/values-en/strings.xml</code> and include the following in that file:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;resources&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"Smooch_activityConversation"</span><span class="nt">&gt;</span>Messages<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"Smooch_startOfConversation"</span><span class="nt">&gt;</span>This is the start of your conversation with the team.<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"Smooch_welcome"</span><span class="nt">&gt;</span>Feel free to leave us a message about anything that\'s on your mind.<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"Smooch_messageHint"</span><span class="nt">&gt;</span>Type a message…<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/resources&gt;</span>
+</code></pre>
+
+<p><aside>Please note that if you want to specify new strings for the default fallback language, you must override them in <code class="prettyprint">res/values/string.xml</code>.</aside></p>
+
+          <h2 id='styling-the-conversation-interface'>Styling the Conversation Interface</h2>
+<p>Using a <code class="prettyprint">colors.xml</code> file in your <code class="prettyprint">res/values</code> folder, you can change the colors used by Smooch:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;resources&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_accent"</span><span class="nt">&gt;</span>#9200aa<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_accentDark"</span><span class="nt">&gt;</span>#76008a<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_accentLight"</span><span class="nt">&gt;</span>#be7cca<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_backgroundInput"</span><span class="nt">&gt;</span>#ffffff<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_btnSendHollow"</span><span class="nt">&gt;</span>#c0c0c0<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_btnSendHollowBorder"</span><span class="nt">&gt;</span>#303030<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_header"</span><span class="nt">&gt;</span>#989898<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_messageDate"</span><span class="nt">&gt;</span>@color/Smooch_header<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_messageShadow"</span><span class="nt">&gt;</span>#7f999999<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_remoteMessageAuthor"</span><span class="nt">&gt;</span>@color/Smooch_header<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_remoteMessageBackground"</span><span class="nt">&gt;</span>#ffffff<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_remoteMessageBorder"</span><span class="nt">&gt;</span>#d9d9d9<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_remoteMessageText"</span><span class="nt">&gt;</span>#000000<span class="nt">&lt;/color&gt;</span>
+
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_userMessageBackground"</span><span class="nt">&gt;</span>@color/Smooch_accent<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_userMessageBorder"</span><span class="nt">&gt;</span>@color/Smooch_accentDark<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_userMessageFailedBackground"</span><span class="nt">&gt;</span>@color/Smooch_accentLight<span class="nt">&lt;/color&gt;</span>
+    <span class="nt">&lt;color</span> <span class="na">name=</span><span class="s">"Smooch_userMessageText"</span><span class="nt">&gt;</span>#ffffff<span class="nt">&lt;/color&gt;</span>
+<span class="nt">&lt;/resources&gt;</span>
+</code></pre>
+
+<p>If you need to update the image of the Send button, simply add an image with the following name to your <code class="prettyprint">drawables</code>:</p>
+<pre class="highlight plaintext"><code>smooch_btn_send_normal.png
+</code></pre>
+
+<p>You can find the original resources by browsing external libraries through Android Studio.</p>
+
+          <h2 id='notification-action-intent-override'>Notification Action Intent Override</h2>
+<p>The default behavior of tapping on a push or in-app notification is to open the Smooch <code class="prettyprint">ConversationActivity</code> intent.
+If you want to change this behavior, simply override the following resource in <code class="prettyprint">settings.xml</code> to the value of your choice:</p>
+<pre class="highlight xml"><code><span class="nt">&lt;resources&gt;</span>
+  <span class="nt">&lt;string</span> <span class="na">name=</span><span class="s">"Smooch_settings_notificationIntent"</span><span class="nt">&gt;</span>io.smooch.ui.ConversationActivity<span class="nt">&lt;/string&gt;</span>
+<span class="nt">&lt;/resources&gt;</span>
+</code></pre>
+
+<p><aside class="notice">Note that the specified intent must extend from the <code class="prettyprint">Activity</code> class.</aside></p>
+
+          <h1 id='partners'>Partners</h1>
+<p>Smooch has a rapidly growing <a href="https://smooch.io/partners/">partner ecosystem</a>. If you have a product or service that could benefit from Smooch&rsquo;s connected channels, messaging features, and more, we&rsquo;d love to offer it on the Smooch marketplace. Smooch uses <a href="https://tools.ietf.org/html/rfc6749">OAuth</a> to facilitate the installation of parter integrations.</p>
+
+<p>First, you should <a href="https://smooch.io/partners/">contact us</a> about becoming a partner and we&rsquo;ll provision you with a client id and everything else you&rsquo;ll need to build your end of the OAuth flow. In the meantime the OAuth endpoints detailed below can be tested by impersonating Shoplifter, a partnership we built for testing purposes.</p>
+<h2 id='add-to-smooch-button'>Add to Smooch Button</h2>
+<p>The HTML template below can be used to place an &ldquo;Add to Smooch&rdquo; button on your website.</p>
+
+<p class="add-to-smooch-button">
+    <a href="https://app.smooch.io/oauth/authorize?client_id=shoplifter"><img alt="Add to Smooch" height="40" width="165" src="https://cdn.smooch.io/images/add_to_smooch.png" srcset="https://cdn.smooch.io/images/add_to_smooch.png 1x, https://cdn.smooch.io/images/add_to_smooch@2x.png 2x"/></a>
+</p>
+<pre class="highlight html"><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://app.smooch.io/oauth/authorize?client_id=shoplifter"</span><span class="nt">&gt;&lt;img</span> <span class="na">alt=</span><span class="s">"Add to Smooch"</span> <span class="na">height=</span><span class="s">"40"</span> <span class="na">width=</span><span class="s">"165"</span> <span class="na">src=</span><span class="s">"https://cdn.smooch.io/images/add_to_smooch.png"</span> <span class="na">srcset=</span><span class="s">"https://cdn.smooch.io/images/add_to_smooch.png 1x, https://cdn.smooch.io/images/add_to_smooch@2x.png 2x"</span><span class="nt">/&gt;&lt;/a&gt;</span>
+</code></pre>
+<h2 id='authorize-endpoint'>Authorize Endpoint</h2>
+<p><api><code class="prettyprint">GET https://app.smooch.io/oauth/authorize</code></api></p>
+
+<p>This endpoint begins the OAuth flow. It relies on a browser session for authentication. If the user is not logged in to Smooch they will be redirected to the login page. If the user has many apps, they will first be prompted to select the one they wish to integrate with. They will then be presented with an Allow/Deny dialog, describing details of the access your integration is requesting.</p>
+
+<table><thead>
+<tr>
+<th><em>Parameter</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>client_id</strong><br/><span class='req'>required</span></td>
+<td>Your integration&rsquo;s unique identifier</td>
+</tr>
+<tr>
+<td><strong>response_type</strong><br/><span class='req'>required</span></td>
+<td>For now the only acceptable value is <code class="prettyprint">code</code></td>
+</tr>
+<tr>
+<td><strong>state</strong><br/><span class='opt'>optional</span></td>
+<td>You may pass in any arbitrary string value here which will be returned to you along with the code via browser redirect</td>
+</tr>
+</tbody></table>
+<h3 id='request'>Request:</h3><pre class="highlight plaintext"><code>https://app.smooch.io/oauth/authorize?client_id=shoplifter&amp;response_type=code
+</code></pre>
+<h3 id='success-response'>Success Response</h3>
+<p>A successful response is delivered via a 302 redirect to the redirect URI configured by your integration.</p>
+
+<table><thead>
+<tr>
+<th><em>Parameter</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>code</strong></td>
+<td>An authorization code which can be exchanged for an access token</td>
+</tr>
+<tr>
+<td><strong>state</strong></td>
+<td>Your state parameter (if one was provided)</td>
+</tr>
+</tbody></table>
+<h3 id='error-response'>Error Response</h3>
+<table><thead>
+<tr>
+<th><em>Parameter</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>error</strong></td>
+<td>For example: <code class="prettyprint">access_denied</code></td>
+</tr>
+<tr>
+<td><strong>state</strong></td>
+<td>Your state parameter (if one was provided)</td>
+</tr>
+</tbody></table>
+<h3 id='error-codes'>Error Codes</h3>
+<table><thead>
+<tr>
+<th><em>Error Code</em></th>
+<th><em>Delivery Method</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>access_denied</strong></td>
+<td>302</td>
+<td>The user denied access</td>
+</tr>
+</tbody></table>
+<h2 id='token-endpoint'>Token Endpoint</h2>
+<p><api><code class="prettyprint">POST https://app.smooch.io/oauth/token</code></api></p>
+
+<p>This endpoint is used to exchange an authorization code can be exchanged for an access token. It should only be used in server-to-server calls.</p>
+
+<table><thead>
+<tr>
+<th><em>Parameter</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>code</strong><br/><span class='req'>required</span></td>
+<td>The authorization code received via <code class="prettyprint">/oauth/authorize</code></td>
+</tr>
+<tr>
+<td><strong>grant_type</strong><br/><span class='req'>required</span></td>
+<td>Must be set to <code class="prettyprint">authorization_code</code></td>
+</tr>
+<tr>
+<td><strong>client_id</strong><br/><span class='req'>required</span></td>
+<td>Your integration&rsquo;s unique identifier</td>
+</tr>
+<tr>
+<td><strong>client_secret</strong><br/><span class='req'>required</span></td>
+<td>Your integration&rsquo;s secret</td>
+</tr>
+</tbody></table>
+<h3 id='request'>Request:</h3><pre class="highlight plaintext"><code>curl -X POST https://api.smooch.io/oauth/token \
+     -d code=your_code \
+     -d grant_type=authorization_code \
+     -d client_id=shoplifter \
+     -d client_secret=secret
+</code></pre>
+<h3 id='success-response'>Success Response:</h3>
+<table><thead>
+<tr>
+<th><em>Parameter</em></th>
+<th><em>Description</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>access_token</strong></td>
+<td>An access token that can now be used to call Smooch APIs</td>
+</tr>
+<tr>
+<td><strong>token_type</strong></td>
+<td><code class="prettyprint">Bearer</code>. All issued tokens are of this type</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+      </div>
+    </div>
+  </body>
+</html>
