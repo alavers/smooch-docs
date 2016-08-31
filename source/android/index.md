@@ -82,6 +82,8 @@ includes:
   - customization/styling_conversations_android
   - customization/notification_action
 
+  - partners/oauth
+
 search: true
 api_docs_link: http://docs.smooch.io/api/android
 ---
