@@ -1819,9 +1819,9 @@ smooch.menu.remove()
 
 Remove the specified app's menu.
 
-# Partners
+# Smooch Connect
 
-Smooch has a rapidly growing [partner ecosystem](https://smooch.io/partners/). If you have a product or service that could benefit from Smooch's connected channels, messaging features, and more, we'd love to offer it on the Smooch marketplace. Smooch uses [OAuth](https://tools.ietf.org/html/rfc6749) to facilitate the installation of parter integrations.
+Smooch has a rapidly growing [partner ecosystem](https://smooch.io/partners/). If you have a product or service that could benefit from Smooch's connected channels, messaging features, and more, we'd love to offer it on the Smooch marketplace. Smooch Connect makes this possible. Smooch uses [OAuth](https://tools.ietf.org/html/rfc6749) to facilitate the installation of parter integrations.
 
 First, you should [contact us](https://smooch.io/partners/) about becoming a partner and we'll provision you with a client id and everything else you'll need to build your end of the OAuth flow. In the meantime the OAuth endpoints detailed below can be tested by impersonating Shoplifter, a partnership we built for testing purposes.
 
