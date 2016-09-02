@@ -79,8 +79,6 @@ includes:
   - customization/string_customization
   - customization/styling_conversations
 
-  - partners/oauth
-
 search: true
 api_docs_link: http://docs.smooch.io/api
 ---

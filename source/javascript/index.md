@@ -81,8 +81,6 @@ includes:
   - customization/sound_notification_js
   - customization/email_capture_js
   - customization/styling_conversations_js
-
-  - partners/oauth
   
 search: true
 api_docs_link: https://github.com/smooch/smooch-js
