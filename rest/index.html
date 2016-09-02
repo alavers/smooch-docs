@@ -2272,6 +2272,28 @@ More info http://example.org
 <td><code class="prettyprint">Bearer</code>. All issued tokens are of this type</td>
 </tr>
 </tbody></table>
+<h2 id='scope'>Scope</h2>
+<p>The default scope of an issued access token is <code class="prettyprint">integration</code> scope. This allows API calls to be made to a specific Smooch app on behalf of an integration, identified by the integration&rsquo;s <code class="prettyprint">clientId</code>. The access token grants permission to get and create app users and conversations associated with the app. The token also grants permission to create webhooks, however only webhooks created for the integration will be visible. An access token with <code class="prettyprint">integration</code> scope cannot see or modify webhooks that were created by other integrations for example.</p>
+
+<table><thead>
+<tr>
+<th><em>API Root</em></th>
+<th><em>Access</em></th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>/v1/appusers/</strong>*</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>/v1/webhooks/</strong>*</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>/v1/menu/</strong>*</td>
+<td>No</td>
+</tr>
+</tbody></table>
 
       </div>
     </div>
