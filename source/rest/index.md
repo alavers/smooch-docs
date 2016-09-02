@@ -1907,3 +1907,12 @@ This endpoint is used to exchange an authorization code for an access token. It 
 | **access_token** | An access token that can now be used to call Smooch APIs |
 | **token_type** | `Bearer`. All issued tokens are of this type |
 
+## Scope
+
+The default scope of an issued access token is `integration` scope. This allows API calls to be made to a specific Smooch app on behalf of an integration, identified by the integration's `clientId`. The access token grants permission to get and create app users and conversations associated with the app. The token also grants permission to create webhooks, however only webhooks created for the integration will be visible. An access token with `integration` scope cannot see or modify webhooks that were created by other integrations for example.
+
+| *API Root*         | *Access*     |
+|--------------------|--------------|
+| **/v1/appusers/*** | Yes          |
+| **/v1/webhooks/*** | Yes          |
+| **/v1/menu/***     | No           |
