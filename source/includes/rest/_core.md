@@ -1943,8 +1943,11 @@ This HTML template can be used to place an "Add to Smooch" button on your websit
 
 > Request:
 
-```
+```shell
 curl https://app.smooch.io/oauth/authorize?client_id=shoplifter&response_type=code
+```
+```js
+// This endpoint is not currently wrapped in a JavaScript lib
 ```
 
 <api>`GET https://app.smooch.io/oauth/authorize`</api>
@@ -1983,12 +1986,15 @@ A successful response is delivered via a 302 redirect to the redirect URI config
 
 > Request:
 
-```
+```shell
 curl -X POST https://api.smooch.io/oauth/token \
      -d code=your_code \
      -d grant_type=authorization_code \
      -d client_id=shoplifter \
      -d client_secret=secret
+```
+```js
+// This endpoint is not currently wrapped in a JavaScript lib
 ```
 
 <api>`POST https://app.smooch.io/oauth/token`</api>
