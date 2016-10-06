@@ -1923,9 +1923,7 @@ Remove the specified app's menu.
 
 # Smooch Connect
 
-Smooch has a rapidly growing [partner ecosystem](https://smooch.io/partners/). If you have a product or service that could benefit from Smooch's connected channels, messaging features, and more, we'd love to offer it on the Smooch marketplace. Smooch Connect makes this possible. Smooch uses [OAuth](https://tools.ietf.org/html/rfc6749) to facilitate the installation of parter integrations.
-
-First, you should [contact us](https://smooch.io/partners/) about becoming a partner and we'll provision you with a client id and everything else you'll need to build your end of the OAuth flow. In the meantime the OAuth endpoints detailed below can be tested by impersonating Shoplifter, a partnership we built for testing purposes.
+Smooch has a rapidly growing partner ecosystem which helps you unlock messaging in your product or service and lets customers find you alongside complementary partners. If you're interested in becoming a partner, tell us what you're building with Smooch using our [partner application](https://smooch.io/partners/) and we'll provision you with everything you'll need to build your end of the OAuth flow using Smooch Connect. In the meantime the OAuth endpoints detailed below can be tested by impersonating Shoplifter, a partnership we built for testing purposes.
 
 ## Add to Smooch Button
 
